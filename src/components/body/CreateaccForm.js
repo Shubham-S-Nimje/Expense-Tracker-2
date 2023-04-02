@@ -10,7 +10,7 @@ const CreateaccForm = () => {
             console.log(enteredemail.current.value)
             console.log(enteredconfirmpass.current.value)
             console.log(enteredpass.current.value)
-            
+            if(enteredpass.current.value === enteredconfirmpass.current.value){
             const url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA8YcdRz-mt4-Y3rPxSLQEVxw4DlXJ0wB4'
           
             fetch(
@@ -41,49 +41,53 @@ const CreateaccForm = () => {
           }).catch(err => {
             alert(err.message);
           });
+        }
+        else{
+          alert('Please check your password')
+        }
         
     }
   return (
-      <div className="">
-          <form className="" onSubmit={OnSubmitHandler}>
-            <div className="">
+      <div className="flex items-center justify-center px-12 py-2">
+          <form className="border-2 m-8 p-2 bg-gray-300 rounded-md" onSubmit={OnSubmitHandler}>
+            <div className="text-left">
               <div>
-                <label className="">Email address</label>
+                <label className="font-bold">Email address :</label>
                 <input
                   type="email"
                   autoComplete="email"
                   required
                   ref={enteredemail}
-                  className=""
+                  className="w-full rounded-md border-2 p-2"
                   placeholder="Email address"
                 />
               </div>
               <div>
-                <label className="">Password</label>
+                <label className="font-bold">Password :</label>
                 <input
                   type="password"
                   autoComplete="current-password"
                   required
                   ref={enteredpass}
-                  className=""
+                  className="w-full rounded-md border-2 p-2"
                   placeholder="Password"
                 />
               </div>
               <div>
-                <label className="">Confirm Password</label>
+                <label className="font-bold">Confirm Password :</label>
                 <input
                   type="password"
                   autoComplete="current-password"
                   required
                   ref={enteredconfirmpass}
-                  className=""
+                  className="w-full rounded-md border-2 p-2"
                   placeholder="Password"
                 />
               </div>
             </div>
 
             <div>
-              <button type="submit" className="">
+              <button type="submit" className="bg-sky-600 text-white py-2 my-2 rounded-md min-w-full">
                 Sign up
               </button>
             </div>

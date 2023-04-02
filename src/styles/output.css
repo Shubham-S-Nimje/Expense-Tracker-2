@@ -566,6 +566,10 @@ video {
   border-radius: 0.375rem;
 }
 
+.rounded-full {
+  border-radius: 9999px;
+}
+
 .border-2 {
   border-width: 2px;
 }
@@ -581,6 +585,10 @@ video {
 
 .underline {
   text-decoration-line: underline;
+}
+
+.bg-blend-darken {
+  background-blend-mode: darken;
 }
 
 .App {

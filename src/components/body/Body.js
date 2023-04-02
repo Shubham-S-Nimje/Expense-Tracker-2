@@ -16,20 +16,20 @@ const Body = () => {
         SetSignup(true)
     }
   return (
-    <div>
+    <div className='min-h-full py-12'>
         {signin &&
         <div>
-            <label>Sign in</label>
+            <label className='underline m-6 text-center text-3xl font-bold text-gray-900'>Sign In</label>
       <LoginForm/>
-      <button onClick={DontHaveAccountHandler}>Dont't have account Login?</button>
+      <button className='bg-red-600 text-white p-2 m-2 rounded-md' onClick={DontHaveAccountHandler}>Dont't have account Login?</button>
       </div>
         }
 
         {signup &&
         <div>
-            <label>Sign up</label>
+            <label className='underline m-6 text-center text-3xl font-bold text-gray-900'>Sign Up</label>
       <CreateaccForm/>
-      <button onClick={HaveAccountHandler}>Already have account Login?</button>
+      <button className='bg-red-600 text-white p-2 m-2 rounded-md' onClick={HaveAccountHandler}>Already have account Login?</button>
       </div>
         }
     </div>
