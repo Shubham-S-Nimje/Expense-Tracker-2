@@ -39,6 +39,7 @@ const LoginForm = () => {
         navigate("/home");
         localStorage.setItem('localId',data.localId)
         localStorage.setItem('idToken',data.idToken)
+        localStorage.setItem('email',data.email)
         console.log("User has successfully signed in");
       })
       .catch((err) => {
