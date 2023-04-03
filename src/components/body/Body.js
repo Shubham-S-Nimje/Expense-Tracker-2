@@ -16,22 +16,36 @@ const Body = () => {
         SetSignup(true)
     }
   return (
-    <div className='min-h-full py-12'>
-        {signin &&
+    <div className="min-h-full py-12 min-h-screen">
+      {signin && (
         <div>
-            <label className='underline m-6 text-center text-3xl font-bold text-gray-900'>Sign In</label>
-      <LoginForm/>
-      <button className='bg-red-600 text-white p-2 m-2 rounded-md' onClick={DontHaveAccountHandler}>Dont't have account Login?</button>
-      </div>
-        }
+          <label className="underline m-6 text-center text-3xl font-bold text-gray-900">
+            Sign In
+          </label>
+          <LoginForm />
+          <button
+            className="bg-red-600 text-white p-2 m-2 rounded-md"
+            onClick={DontHaveAccountHandler}
+          >
+            Dont't have account Login?
+          </button>
+        </div>
+      )}
 
-        {signup &&
+      {signup && (
         <div>
-            <label className='underline m-6 text-center text-3xl font-bold text-gray-900'>Sign Up</label>
-      <CreateaccForm/>
-      <button className='bg-red-600 text-white p-2 m-2 rounded-md' onClick={HaveAccountHandler}>Already have account Login?</button>
-      </div>
-        }
+          <label className="underline m-6 text-center text-3xl font-bold text-gray-900">
+            Sign Up
+          </label>
+          <CreateaccForm />
+          <button
+            className="bg-red-600 text-white p-2 m-2 rounded-md"
+            onClick={HaveAccountHandler}
+          >
+            Already have account Login?
+          </button>
+        </div>
+      )}
     </div>
   );
 }
