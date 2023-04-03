@@ -1,9 +1,13 @@
 import React from 'react'
 import ProfileForm from './ProfileForm'
+import LoginForm from '../body/LoginForm copy'
 
 const ProfilePage = () => {
+  const userlocalId = localStorage.getItem('localId')
+
   return (
-    <div className="min-h-screen py-2">
+    <>
+    {userlocalId && <div className="min-h-screen py-2">
       <div className="justify-start">
         <h1 className="font-bold text-3xl px-2">Contact Details</h1>
       </div>
@@ -13,7 +17,9 @@ const ProfilePage = () => {
         </button>
       </div>
       <ProfileForm />
-    </div>
+    </div>}
+    {!userlocalId && <LoginForm/>}
+    </>
   );
 }
 

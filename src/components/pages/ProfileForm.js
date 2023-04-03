@@ -52,7 +52,7 @@ const ProfileForm = () => {
                     }
         }
         fetchData();
-    },[])
+    },[userlocalId])
 
     const VarifyEmailHandler=(event)=>{
         event.preventDefault();
