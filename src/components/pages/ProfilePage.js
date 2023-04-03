@@ -1,8 +1,7 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import ProfileForm from './ProfileForm'
 
 const ProfilePage = () => {
-    const updatefname = useRef();
   return (
     <div className="min-h-screen py-2">
       <div className="justify-start">

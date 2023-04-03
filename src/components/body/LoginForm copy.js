@@ -37,11 +37,14 @@ const LoginForm = () => {
       .then((data) => {
         console.log(data);
         navigate("/home");
+        localStorage.setItem('localId',data.localId)
+        localStorage.setItem('idToken',data.idToken)
         console.log("User has successfully signed in");
       })
       .catch((err) => {
         alert(err.message);
       });
+
   };
   return (
     <div className="flex items-center justify-center px-12 py-2">
@@ -54,7 +57,6 @@ const LoginForm = () => {
             <label className="font-bold">Email address :</label>
             <input
               type="email"
-              autoComplete="email"
               required
               ref={enteredemail}
               className="w-full rounded-md border-2 p-2"
@@ -65,7 +67,6 @@ const LoginForm = () => {
             <label className="font-bold">Password :</label>
             <input
               type="password"
-              autoComplete="current-password"
               required
               ref={enteredpass}
               className="w-full rounded-md border-2 p-2"

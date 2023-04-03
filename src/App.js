@@ -5,6 +5,7 @@ import Header from './components/header/Header';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import HomePage from './components/pages/HomePage';
 import ProfilePage from './components/pages/ProfilePage';
+import Contextprovider from './components/store/Contextprovider';
 
 const router = createBrowserRouter([
   {path:'/', element:<Body/>},
@@ -14,9 +15,11 @@ const router = createBrowserRouter([
 function App() {
   return (
     <div className="App">
+      <Contextprovider>
       <Header/>
       <RouterProvider router={router}/>
       <Footer/>
+      </Contextprovider>
     </div>
   );
 }
