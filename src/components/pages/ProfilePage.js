@@ -1,6 +1,6 @@
 import React from 'react'
 import ProfileForm from './ProfileForm'
-import LoginForm from '../body/LoginForm copy'
+import Body from '../body/Body'
 
 const ProfilePage = () => {
   const userlocalId = localStorage.getItem('localId')
@@ -18,7 +18,7 @@ const ProfilePage = () => {
       </div>
       <ProfileForm />
     </div>}
-    {!userlocalId && <LoginForm/>}
+    {!userlocalId && <Body/>}
     </>
   );
 }

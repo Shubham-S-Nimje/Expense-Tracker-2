@@ -6,11 +6,13 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import HomePage from './components/pages/HomePage';
 import ProfilePage from './components/pages/ProfilePage';
 import Contextprovider from './components/store/Contextprovider';
+import ForgotpassForm from './components/body/ForgotpassForm';
 
 const router = createBrowserRouter([
   {path:'/', element:<Body/>},
   {path:'/home', element: <HomePage/>},
   {path:'/profile', element: <ProfilePage/>},
+  {path:'/forgotpass', element: <ForgotpassForm/>},
 ])
 function App() {
   return (

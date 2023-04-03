@@ -4,6 +4,9 @@ import LoginForm from '../body/LoginForm copy';
 const ProfileForm = () => {
     const enteredfname = useRef();
     const enteredpurl = useRef();
+    const enteredpass = useRef();
+    const enteredconfirmpass = useRef();
+
     const userlocalId = localStorage.getItem('localId')
     const useridToken = localStorage.getItem('idToken')
     const useremail = localStorage.getItem('email')
@@ -36,7 +39,7 @@ const ProfileForm = () => {
             catch (error) {
               alert(error.message);
             }
-        })
+        },[useridToken])
 
         useEffect(()=>{
             async function fetchData() {
@@ -86,22 +89,62 @@ const ProfileForm = () => {
       });
     }
 
+    const onPassChangeHandler = (event) => {
+      event.preventDefault();
+      const updatedpass = enteredpass.current.value;
+      const updatedconfirmpass = enteredconfirmpass.current.value;
+
+      if (updatedpass === updatedconfirmpass) {
+        fetch("https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyA8YcdRz-mt4-Y3rPxSLQEVxw4DlXJ0wB4", {
+          method: "POST",
+          body: JSON.stringify({
+            idToken: useridToken,
+            password: updatedpass,
+            returnSecureToken: true,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((res) => {
+            if (res.ok) {
+              return res.json();
+            } else {
+              return res.json().then((data) => {
+                let errorMessage = "Authentication failed";
+                throw new Error(errorMessage);
+              });
+            }
+          })
+          .then((data) => {
+            console.log(data);
+            console.log("Passward changed successfully");
+          })
+          .catch((err) => {
+            alert(err.message);
+          });
+      } else {
+        alert("Please check your password");
+      }
+    }
+
   return (
     <div>
       {userlocalId && (
-        <form className="p-2" onSubmit={onSubmitHandler}>
-            <div>
-              <label>Email :</label>
-              <input
-                className="border-2 rounded-md mx-2 px-2"
-                placeholder={useremail}
-              />
-              <button 
-              className='bg-sky-600 p-2 m-2 rounded-md text-white'
-              onClick={VarifyEmailHandler}>Varify Email</button>
-            </div>
+         <div>
+         <label>Email :</label>
+         <input
+           className="border-2 rounded-md mx-2 px-2"
+           placeholder={useremail}
+         />
+         <button 
+         className='bg-sky-600 p-2 m-2 rounded-md text-white'
+         onClick={VarifyEmailHandler}>Varify Email</button>
+       
+
+        <form className="p-2 border-2 m-2" onSubmit={onSubmitHandler}>
           <div className="flex">
-            <div>
+            <div className='align-middle m-2 p-2 '>
               <label>Full Name :</label>
               <input
                 className="border-2 rounded-md mx-2 px-2"
@@ -109,7 +152,7 @@ const ProfileForm = () => {
                 placeholder={username}
               />
             </div>
-            <div>
+            <div className='align-middle m-2 p-2 '>
               <label>Profile Photo URL :</label>
               <input
                 className="border-2 rounded-md mx-2 px-2"
@@ -117,11 +160,38 @@ const ProfileForm = () => {
                 placeholder={userurl}
               />
             </div>
-          </div>
-          <button className="bg-sky-600 p-2 m-2 rounded-md text-white">
+            <div className='m-2 align-middle'>
+          <button className="bg-sky-600 p-2 mx-2 rounded-md text-white">
             Update
           </button>
+          </div>
+          </div>
         </form>
+
+        <form className="p-2 border-2 m-2" onSubmit={onPassChangeHandler}>
+          <div className="flex">
+            <div className='align-middle m-2 p-2 '>
+              <label>New Passward :</label>
+              <input
+                className="border-2 rounded-md mx-2 px-2"
+                ref={enteredpass}
+              />
+            </div>
+            <div className='align-middle m-2 p-2 '>
+              <label>Confirm New Passward :</label>
+              <input
+                className="border-2 rounded-md mx-2 px-2"
+                ref={enteredconfirmpass}
+              />
+            </div>
+            <div className='m-2 align-middle'>
+          <button className="bg-sky-600 p-2 mx-2 rounded-md text-white">
+            Change Passward
+          </button>
+          </div>
+          </div>
+        </form>
+        </div>
       )}
       {!userlocalId && <LoginForm />}
     </div>

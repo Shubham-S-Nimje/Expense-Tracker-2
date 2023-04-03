@@ -1,10 +1,12 @@
 import React, { useRef } from 'react'
 import { useNavigate } from "react-router-dom";
+import ProfilePage from '../pages/ProfilePage';
 
 const LoginForm = () => {
   const enteredemail = useRef();
   const enteredpass = useRef();
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  const userlocalId = localStorage.getItem('localId')
 
   const OnSubmitHandler = (event) => {
     event.preventDefault();
@@ -47,8 +49,10 @@ const LoginForm = () => {
       });
 
   };
+
   return (
-    <div className="flex items-center justify-center px-12 py-2">
+    <>
+    {!userlocalId && <div className="flex items-center justify-center px-12 py-2">
       <form
         className="border-2 m-8 p-2 bg-gray-300 rounded-md"
         onSubmit={OnSubmitHandler}
@@ -85,7 +89,9 @@ const LoginForm = () => {
           </button>
         </div>
       </form>
-    </div>
+    </div>}
+    {userlocalId && <ProfilePage/>}
+    </>
   );
 }
 
