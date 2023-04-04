@@ -5,7 +5,6 @@ import { useState } from 'react'
 const Header = () => {
   const [userlogedin, Setuserlogedin] = useState()
   const userlocalId = localStorage.getItem('localId')
-  
 
   const OnClickHandler =()=> {
     localStorage.setItem('localId','')
@@ -22,7 +21,7 @@ const Header = () => {
   return (
     <div className='flex bg-sky-600 text-white font-bold text-3xl p-2 justify-end'>
             {userlocalId && <button 
-            onClick={OnClickHandler}>Logout</button>}
+            onClick={OnClickHandler}><a href='/'>Logout</a></button>}
             {!userlocalId && <a href='/'>Login</a>}
     </div>
   )

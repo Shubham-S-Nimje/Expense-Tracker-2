@@ -1,11 +1,24 @@
 import React from 'react'
-import ContectData from './Contextdata';
-const userdata = [];
+import ContextData from './Contextdata';
+import { useState } from 'react';
+
 const Contextprovider = (props) => {
+  const [expenses, Setexpense] = useState([])
+  
+  const expensedata = (newexpensemoney, newexpensedescription, newexpensecategory) => {
+    Setexpense((newexpensedata) => {
+      return[...newexpensedata,
+      { expensemoney:newexpensemoney,
+        expensedescription:newexpensedescription,
+        expensecategory:newexpensecategory}]
+    })
+  }
+console.log(expenses)
+  
   return (
-    <ContectData.Provider value={userdata}>
+    <ContextData.Provider value={{expenses,expensedata}}>
       {props.children}
-    </ContectData.Provider>
+    </ContextData.Provider>
   )
 }
 

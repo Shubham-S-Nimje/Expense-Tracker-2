@@ -1,5 +1,5 @@
 import React from 'react'
 
-const ContectData = React.createContext();
+const ContextData = React.createContext();
 
-export default ContectData;
+export default ContextData;

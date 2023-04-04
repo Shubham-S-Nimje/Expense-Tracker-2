@@ -16,13 +16,13 @@ const router = createBrowserRouter([
 ])
 function App() {
   return (
+    <Contextprovider>
     <div className="App">
-      <Contextprovider>
       <Header/>
       <RouterProvider router={router}/>
       <Footer/>
-      </Contextprovider>
     </div>
+    </Contextprovider>
   );
 }
 
