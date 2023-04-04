@@ -4,12 +4,13 @@ import { useRef } from 'react'
 import { useContext } from 'react'
 import ContextData from '../store/Contextdata'
 
-const ExpencesForm = (props) => {
+const ExpencesForm = () => {
+    const userlocalId = localStorage.getItem('localId')
+
     const {expensedata} = useContext(ContextData)
     const enteredmoney = useRef();
     const entereddesc = useRef();
     const enteredcategory = useRef();
-    const [expenseitems, Setexpenseitems] = useState([])
 
     const SubmitExpenses = (event) => {
     event.preventDefault();
@@ -17,14 +18,39 @@ const ExpencesForm = (props) => {
     const expensemoney = enteredmoney.current.value
     const expensedescription = entereddesc.current.value
     const expensecategory = enteredcategory.current.value
-    
-    // const expenseitem = [{
-    //     money:expensemoney,
-    //     description:expensedescription,
-    //     category:expensecategory,
-    // }]
 
     expensedata(expensemoney, expensedescription, expensecategory)
+    const data = {
+        expensemoney: expensemoney,
+        expensedescription: expensedescription,
+        expensecategory: expensecategory,
+        returnSecureToken: true,
+      }
+
+    fetch(`https://expense-tracker-f48d6-default-rtdb.firebaseio.com/users/${userlocalId}/expences.json`, {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return res.json().then((data) => {
+            let errorMessage = "Authentication failed";
+            throw new Error(errorMessage);
+          });
+        }
+      })
+      .then((data) => {
+        console.log(data);
+        console.log("expense added successfully");
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
 
     }
     // console.log(expenseitems)
@@ -74,8 +100,7 @@ const ExpencesForm = (props) => {
         </div>
     </form>
   
-  <DisplayExpenses expenseitems={expenseitems}/>
-  
+  <DisplayExpenses />
 
 </div>
   )
