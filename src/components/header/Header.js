@@ -1,10 +1,8 @@
-import React from 'react'
-import { useEffect } from 'react'
-import { useState } from 'react'
+import React, { useContext } from 'react'
+import ContextData from '../store/Contextdata'
 
 const Header = () => {
-  const [userlogedin, Setuserlogedin] = useState()
-  const userlocalId = localStorage.getItem('localId')
+  const {userlogedin, Setuserlogedin} = useContext(ContextData)
 
   const OnClickHandler =()=> {
     localStorage.setItem('localId','')
@@ -13,16 +11,16 @@ const Header = () => {
         Setuserlogedin(false)
   }
 
-  useEffect(()=> {
-    {userlocalId && Setuserlogedin(true)}
-    {!userlocalId && Setuserlogedin(false)}
-  },[OnClickHandler])
+  // useEffect(()=> {
+  //   {userlogedin && Setuserlogedin(userlogedin)}
+  //   {!userlogedin && Setuserlogedin('')}
+  // },[OnClickHandler])
 
   return (
     <div className='flex bg-sky-600 text-white font-bold text-3xl p-2 justify-end'>
-            {userlocalId && <button 
+            {userlogedin && <button 
             onClick={OnClickHandler}><a href='/'>Logout</a></button>}
-            {!userlocalId && <a href='/'>Login</a>}
+            {!userlogedin && <a href='/'>Login</a>}
     </div>
   )
 }

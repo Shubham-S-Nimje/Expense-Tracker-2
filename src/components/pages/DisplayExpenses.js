@@ -1,58 +1,156 @@
-import React, { useEffect, useState } from 'react'
-import { useContext } from 'react'
-import ContextData from '../store/Contextdata'
+import React from "react";
+import { useContext } from "react";
+import ContextData from "../store/Contextdata";
+import { useCallback } from "react";
+import EditExpenseForm from "./EditExpenseForm";
+import { useState } from "react";
 
-const DisplayExpenses = () => {
-    const {expenses} = useContext(ContextData)
-    const [expence, Setexpence] = useState([])
-    const userlocalId = localStorage.getItem('localId')
+const DisplayExpenses = (props) => {
+  const { userlocalId } = useContext(ContextData);
+  const [editedmoney, Seteditedmoney] = useState();
+  const [editeddesc, Setediteddesc] = useState();
+  const [editedcat, Seteditedcat] = useState();
+  const [editedid, Seteditedid] = useState();
+  const [editbutonclicked, Seteditbutonclicked] = useState(false);
 
-    // const data = props.expenseitems
-console.log(expenses)
+  // const [expence, Setexpence] = useState([])
 
-useEffect(()=>{
-    async function fetchData() {
-    try{
-        const response = await fetch(`https://expense-tracker-f48d6-default-rtdb.firebaseio.com/users/${userlocalId}/expences.json`)
-        const data = await response.json();
-        console.log(data)
-        Setexpence(data)
-            }
-            catch{
-                alert('error')
-            }
-}
-fetchData();
-},[DisplayExpenses])
-console.log(expence);
+  // const data = props.expenseitems
+  // console.log(defaultValue)
+
+  const OnDeleteHandler = useCallback((event) => {
+    console.log(event.target.value);
+    fetch(
+      `https://expense-tracker-f48d6-default-rtdb.firebaseio.com/users/${userlocalId}/expences/${event.target.value}.json`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return res.json().then((data) => {
+            let errorMessage = "Authentication failed";
+            throw new Error(errorMessage);
+          });
+        }
+      })
+      .then((data) => {
+        console.log("expense deleted successfully");
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+  }, []);
+
+  const editItem = (d1, d2, d3, id) => {
+    Seteditedcat(d1);
+    Setediteddesc(d2);
+    Seteditedmoney(d3);
+    Seteditedid(id);
+  };
+
+  const OncloseHandler = () => {
+    Seteditbutonclicked(false);
+  };
+  // useEffect(()=>{
+  //     async function fetchData() {
+  //     try{
+  //         const response = await fetch(`https://expense-tracker-f48d6-default-rtdb.firebaseio.com/users/${userlocalId}/expences.json`)
+  //         const data = await response.json();
+  //         console.log(data)
+  //         Setexpence(data)
+  //             }
+  //             catch{
+  //                 alert('error')
+  //             }
+  // }
+  // fetchData();
+  // },[OnDeleteHandler])
+  // console.log(expence);
 
   return (
     <div className="bg-blue-100 m-8 rounded-md p-2">
+      {editbutonclicked && (
+        <>
+          <EditExpenseForm
+            editedmoney={editedmoney}
+            editeddesc={editeddesc}
+            editedcat={editedcat}
+            editedid={editedid}
+          />
+          <button
+            className="bg-red-600 text-white p-2 m-2 rounded-md"
+            onClick={OncloseHandler}
+          >
+            Cancel
+          </button>
+        </>
+      )}
       <table className="table-fixed w-full">
-        <thead className='bg-white'>
-          <tr>
+        <thead className="bg-white border-black border-2">
+          <tr className="text-2xl">
             <th>Category :</th>
             <th>Description :</th>
             <th>Money :</th>
+            <th>Edit :</th>
+            <th>Delete :</th>
           </tr>
         </thead>
-        <tbody className='table-fixed w-full justify-center text-center'>
+        <tbody className="table-fixed w-full justify-center text-center">
           {/* <h1>{data.money}</h1>
       <h1>{data.description}</h1>
       <h1>{data.category}</h1> */}
-          {expence && Object.keys(expence).map((data, index) => {
-            return (
-              <tr key={index}>
-                <td>{expence[data].expensecategory}</td>
-                <td>{expence[data].expensedescription} </td>
-                <td>Rs. {expence[data].expensemoney}/- </td>
-              </tr>
-            );
-          })}
+          {props.expence &&
+            Object.keys(props.expence).map((data, index) => {
+              return (
+                <tr key={index} className="text-xl">
+                  <td>{props.expence[data].expensecategory}</td>
+                  <td>{props.expence[data].expensedescription} </td>
+                  <td>Rs. {props.expence[data].expensemoney}/- </td>
+                  <td>
+                    <button
+                      className="bg-green-600 text-white p-2 m-2 rounded-md"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        Seteditbutonclicked(true);
+                        editItem(
+                          props.expence[data].expensecategory,
+                          props.expence[data].expensedescription,
+                          props.expence[data].expensemoney,
+                          data
+                        );
+                      }}
+                      value={[data]}
+                    >
+                      Edit
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      className="bg-red-600 text-white rounded-md p-2 m-1"
+                      value={[data]}
+                      onClick={OnDeleteHandler}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          {/* onClick=
+          {() => {
+            e.preventDefault();
+            removeItem(i.id, i.category, i.timeAdded);
+          }} */}
         </tbody>
       </table>
     </div>
   );
-}
+};
 
-export default DisplayExpenses
+export default DisplayExpenses;

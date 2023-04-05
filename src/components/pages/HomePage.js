@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import LoginForm from '../body/LoginForm copy'
 import ExpencesForm from './ExpencesForm'
+import ContextData from '../store/Contextdata'
 
 const HomePage = () => {
-  const userlocalId = localStorage.getItem('localId')
+  const {userlocalId} = useContext(ContextData)
+
   return (
     <>
     {userlocalId && <div className='min-h-screen'>

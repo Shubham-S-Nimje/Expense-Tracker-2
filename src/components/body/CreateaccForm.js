@@ -41,6 +41,7 @@ const CreateaccForm = () => {
         })
         .then((data) => {
           console.log(data);
+          navigate("/");
           console.log("User has successfully signed up");
         })
         .catch((err) => {

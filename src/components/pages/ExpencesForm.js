@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import DisplayExpenses from './DisplayExpenses'
 import { useRef } from 'react'
 import { useContext } from 'react'
 import ContextData from '../store/Contextdata'
 
 const ExpencesForm = () => {
-    const userlocalId = localStorage.getItem('localId')
+    const {expensedata,userlocalId} = useContext(ContextData)
+    const [expence, Setexpence] = useState([])
 
-    const {expensedata} = useContext(ContextData)
     const enteredmoney = useRef();
     const entereddesc = useRef();
     const enteredcategory = useRef();
@@ -51,8 +51,23 @@ const ExpencesForm = () => {
       .catch((err) => {
         alert(err.message);
       });
-
     }
+      useEffect(()=>{
+        async function fetchData() {
+        try{
+            const response = await fetch(`https://expense-tracker-f48d6-default-rtdb.firebaseio.com/users/${userlocalId}/expences.json`)
+            const data = await response.json();
+            console.log(data)
+            Setexpence(data)
+                }
+                catch{
+                    alert('error')
+                }
+    }
+    fetchData();
+    },[userlocalId])
+
+    
     // console.log(expenseitems)
   return (
     <div>
@@ -85,10 +100,10 @@ const ExpencesForm = () => {
               className="w-full rounded-md border-2 p-2 my-2"
               ref={enteredcategory}
             >
-                <option value="rent">Rent</option>
-                <option value="rent">Food</option>
-                <option value="rent">Bill</option>
-                <option value="rent">Emi</option>
+                <option value="Rent">Rent</option>
+                <option value="Food">Food</option>
+                <option value="Bill">Bill</option>
+                <option value="Emi">Emi</option>
             </select>
           </div>
           <div>
@@ -100,7 +115,7 @@ const ExpencesForm = () => {
         </div>
     </form>
   
-  <DisplayExpenses />
+  <DisplayExpenses expence={expence}/>
 
 </div>
   )

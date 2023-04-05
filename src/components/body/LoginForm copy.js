@@ -1,12 +1,14 @@
 import React, { useRef } from 'react'
 import { useNavigate } from "react-router-dom";
 import ProfilePage from '../pages/ProfilePage';
+import { useContext } from 'react';
+import ContextData from '../store/Contextdata';
 
 const LoginForm = () => {
   const enteredemail = useRef();
   const enteredpass = useRef();
   const navigate = useNavigate()
-  const userlocalId = localStorage.getItem('localId')
+  const {Setuserlogedin, userlocalId} = useContext(ContextData)
 
   const OnSubmitHandler = (event) => {
     event.preventDefault();
@@ -42,6 +44,7 @@ const LoginForm = () => {
         localStorage.setItem('localId',data.localId)
         localStorage.setItem('idToken',data.idToken)
         localStorage.setItem('email',data.email)
+        Setuserlogedin(true)
         console.log("User has successfully signed in");
       })
       .catch((err) => {
