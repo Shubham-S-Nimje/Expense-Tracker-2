@@ -1,14 +1,16 @@
 import React, { useRef } from 'react'
 import { useNavigate } from "react-router-dom";
 import ProfilePage from '../pages/ProfilePage';
-import { useContext } from 'react';
-import ContextData from '../store/Contextdata';
+import { useDispatch } from 'react-redux';
+import { authActions } from '../../store/index.js'
+import { useSelector } from 'react-redux';
 
 const LoginForm = () => {
   const enteredemail = useRef();
   const enteredpass = useRef();
   const navigate = useNavigate()
-  const {Setuserlogedin, userlocalId} = useContext(ContextData)
+  const dispatch = useDispatch()
+  const isAuth = useSelector(state => state.auth.isAuthenticated)
 
   const OnSubmitHandler = (event) => {
     event.preventDefault();
@@ -44,7 +46,7 @@ const LoginForm = () => {
         localStorage.setItem('localId',data.localId)
         localStorage.setItem('idToken',data.idToken)
         localStorage.setItem('email',data.email)
-        Setuserlogedin(true)
+        dispatch(authActions.login())
         console.log("User has successfully signed in");
       })
       .catch((err) => {
@@ -55,7 +57,7 @@ const LoginForm = () => {
 
   return (
     <>
-    {!userlocalId && <div className="flex items-center justify-center px-12 py-2">
+    {!isAuth && <div className="flex items-center justify-center px-12 py-2">
       <form
         className="border-2 m-8 p-2 bg-gray-300 rounded-md"
         onSubmit={OnSubmitHandler}
@@ -93,7 +95,7 @@ const LoginForm = () => {
         </div>
       </form>
     </div>}
-    {userlocalId && <ProfilePage/>}
+    {isAuth && <ProfilePage/>}
     </>
   );
 }

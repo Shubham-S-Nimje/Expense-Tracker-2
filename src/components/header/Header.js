@@ -1,14 +1,18 @@
 import React, { useContext } from 'react'
 import ContextData from '../store/Contextdata'
+import { useSelector } from 'react-redux';
+import { authActions } from '../../store/index.js';
+import { useDispatch } from 'react-redux';
 
 const Header = () => {
-  const {userlogedin, Setuserlogedin} = useContext(ContextData)
+  const isAuth = useSelector(state => state.auth.isAuthenticated)
+  const dispatch = useDispatch()
 
   const OnClickHandler =()=> {
     localStorage.setItem('localId','')
         localStorage.setItem('idToken','')
         localStorage.setItem('email','')
-        Setuserlogedin(false)
+        dispatch(authActions.logout());
   }
 
   // useEffect(()=> {
@@ -17,10 +21,11 @@ const Header = () => {
   // },[OnClickHandler])
 
   return (
-    <div className='flex bg-sky-600 text-white font-bold text-3xl p-2 justify-end'>
-            {userlogedin && <button 
+    <div className='flex bg-sky-600 text-white font-bold text-3xl p-2 justify-between'>
+      <a href='/home'>Expense Tracker</a>
+            {isAuth && <button 
             onClick={OnClickHandler}><a href='/'>Logout</a></button>}
-            {!userlogedin && <a href='/'>Login</a>}
+            {!isAuth && <a href='/'>Login</a>}
     </div>
   )
 }

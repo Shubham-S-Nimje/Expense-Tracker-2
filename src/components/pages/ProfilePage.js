@@ -1,11 +1,9 @@
 import React from 'react'
 import ProfileForm from './ProfileForm'
 import Body from '../body/Body'
-import ContextData from '../store/Contextdata'
-import { useContext } from 'react'
 
 const ProfilePage = () => {
-  const {userlocalId} = useContext(ContextData)
+  const userlocalId = localStorage.getItem('localId')
 
 
   return (

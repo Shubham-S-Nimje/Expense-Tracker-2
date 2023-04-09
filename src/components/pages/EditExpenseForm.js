@@ -1,9 +1,8 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { useRef } from 'react'
-import ContextData from '../store/Contextdata';
 
 const EditExpenseForm = (props) => {
-    const { userlocalId } = useContext(ContextData);
+  const userlocalId = localStorage.getItem('localId')
 // console.log(props.editedid);
     const editedenteredmoney = useRef();
     const editedentereddesc = useRef();
@@ -49,9 +48,9 @@ const EditExpenseForm = (props) => {
   return (
     <div>
       <form onSubmit={SubmitExpenses}>
-      <div className="flex">
+      <div className="flex border-2 border-black rounded-md justify-between p-2">
           <div>
-            <label className="font-bold text-3xl">Money spent :</label>
+            <label className="font-bold text-2xl">Money spent :</label>
             <input
               type="number"
               required
@@ -62,7 +61,7 @@ const EditExpenseForm = (props) => {
             />
           </div>
           <div>
-            <label className="font-bold text-3xl">Description :</label>
+            <label className="font-bold text-2xl">Description :</label>
             <textarea
               type="text"
               required
@@ -73,7 +72,7 @@ const EditExpenseForm = (props) => {
             />
           </div>
           <div>
-            <label className="font-bold text-3xl">Select category :</label>
+            <label className="font-bold text-2xl">Select category :</label>
             <select
               required
               className="w-full rounded-md border-2 p-2 my-2"

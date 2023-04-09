@@ -7,6 +7,9 @@ import HomePage from './components/pages/HomePage';
 import ProfilePage from './components/pages/ProfilePage';
 import Contextprovider from './components/store/Contextprovider';
 import ForgotpassForm from './components/body/ForgotpassForm';
+import { useDispatch } from 'react-redux';
+import { authActions } from '../src/store/index.js'
+import { useEffect } from 'react';
 
 const router = createBrowserRouter([
   {path:'/', element:<Body/>},
@@ -15,6 +18,14 @@ const router = createBrowserRouter([
   {path:'/forgotpass', element: <ForgotpassForm/>},
 ])
 function App() {
+  const userlocalId = localStorage.getItem('localId')
+  const dispatch = useDispatch()
+
+  useEffect(()=> {
+    {userlocalId && dispatch(authActions.login())}
+    {!userlocalId && dispatch(authActions.logout())}
+  },[userlocalId])
+
   return (
     <Contextprovider>
     <div className="App">

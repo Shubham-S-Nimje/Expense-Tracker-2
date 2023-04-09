@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import LoginForm from '../body/LoginForm copy';
+import LoginForm from '../body/LoginForm';
 import PassChangeForm from './PassChangeForm';
 import EmailVariForm from './EmailVariForm';
 

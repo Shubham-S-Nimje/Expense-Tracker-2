@@ -1,39 +1,58 @@
-import React, { useEffect, useState } from 'react'
-import DisplayExpenses from './DisplayExpenses'
-import { useRef } from 'react'
-import { useContext } from 'react'
-import ContextData from '../store/Contextdata'
+import React, { useEffect, useState } from "react";
+import DisplayExpenses from "./DisplayExpenses";
+import { useRef } from "react";
+import { useContext } from "react";
+import ContextData from "../store/Contextdata";
 
 const ExpencesForm = () => {
-    const {expensedata,userlocalId} = useContext(ContextData)
-    const [expence, Setexpence] = useState([])
+  const { expensedata } = useContext(ContextData);
+  const userlocalId = localStorage.getItem('localId')
 
-    const enteredmoney = useRef();
-    const entereddesc = useRef();
-    const enteredcategory = useRef();
+  const [expence, Setexpence] = useState([]);
+  const [enterexpense, setenterexpense] = useState(false);
 
-    const SubmitExpenses = (event) => {
+  const Onaddexpenseclickhandler = () => {
+    setenterexpense(true);
+  };
+  const Oncloseexpenseclickhandler = () => {
+    setenterexpense(false);
+  };
+
+  const enteredmoney = useRef();
+  const entereddesc = useRef();
+  const enteredcategory = useRef();
+
+  const SubmitExpenses = (event) => {
     event.preventDefault();
 
-    const expensemoney = enteredmoney.current.value
-    const expensedescription = entereddesc.current.value
-    const expensecategory = enteredcategory.current.value
+    const expensemoney = enteredmoney.current.value;
+    const expensedescription = entereddesc.current.value;
+    const expensecategory = enteredcategory.current.value;
 
-    expensedata(expensemoney, expensedescription, expensecategory)
+    if(expensemoney > 10000){
+      console.log('expensemoney')
+      alert('Activate Premium Button')
+    }
+    else
+
+    {expensedata(expensemoney, expensedescription, expensecategory);
     const data = {
-        expensemoney: expensemoney,
-        expensedescription: expensedescription,
-        expensecategory: expensecategory,
-        returnSecureToken: true,
-      }
+      expensemoney: expensemoney,
+      expensedescription: expensedescription,
+      expensecategory: expensecategory,
+      returnSecureToken: true,
+    };
 
-    fetch(`https://expense-tracker-f48d6-default-rtdb.firebaseio.com/users/${userlocalId}/expences.json`, {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    fetch(
+      `https://expense-tracker-f48d6-default-rtdb.firebaseio.com/users/${userlocalId}/expences.json`,
+      {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
       .then((res) => {
         if (res.ok) {
           return res.json();
@@ -51,74 +70,99 @@ const ExpencesForm = () => {
       .catch((err) => {
         alert(err.message);
       });
-    }
-      useEffect(()=>{
-        async function fetchData() {
-        try{
-            const response = await fetch(`https://expense-tracker-f48d6-default-rtdb.firebaseio.com/users/${userlocalId}/expences.json`)
-            const data = await response.json();
-            console.log(data)
-            Setexpence(data)
-                }
-                catch{
-                    alert('error')
-                }
+  };
+}
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch(
+          `https://expense-tracker-f48d6-default-rtdb.firebaseio.com/users/${userlocalId}/expences.json`
+        );
+        const data = await response.json();
+        console.log(data);
+        Setexpence(data);
+      } catch {
+        alert("error");
+      }
     }
     fetchData();
-    },[userlocalId])
+  }, [userlocalId]);
 
-    
-    // console.log(expenseitems)
+  // console.log(expenseitems)
   return (
     <div>
-    <form onSubmit={SubmitExpenses}>
-      <div className="border-2 m-8 p-2 bg-blue-100 rounded-md justify-start text-left">
-          <div>
-            <label className="font-bold text-3xl">Money spent :</label>
-            <input
-              type="number"
-              required
-              className="w-full rounded-md border-2 p-2 my-2"
-              placeholder="Enter amount Ex.99"
-              ref={enteredmoney}
-            />
-          </div>
-          <div>
-            <label className="font-bold text-3xl">Description :</label>
-            <textarea
-              type="text"
-              required
-              className="w-full rounded-md border-2 p-2 my-2"
-              placeholder="Enter description"
-              ref={entereddesc}
-            />
-          </div>
-          <div>
-            <label className="font-bold text-3xl">Select category :</label>
-            <select
-              required
-              className="w-full rounded-md border-2 p-2 my-2"
-              ref={enteredcategory}
-            >
+      {!enterexpense && (
+        <button
+          className="mt-4 bg-white font-bold text-2xl p-2 rounded-md"
+          onClick={Onaddexpenseclickhandler}
+        >
+          Add Expense
+        </button>
+      )}
+
+      {enterexpense && (
+        <form onSubmit={SubmitExpenses}
+        className="border-2 m-4 p-8 bg-blue-100 rounded-md ">
+          <div className="flex justify-between p-4 rounded-md bg-blue-600">
+              <h2 className="text-white align-middle text-3xl font-bold">
+                Enter Expense Details :
+              </h2>
+              <button
+                className="bg-red-600 text-white p-2 rounded-md"
+                onClick={Oncloseexpenseclickhandler}
+              >
+                Close
+              </button>
+            </div>
+          <div className="justify-start text-left mt-2">
+            <div>
+              <label className="font-bold text-3xl">Money spent :</label>
+              <input
+                type="number"
+                required
+                className="w-full rounded-md border-2 p-2 my-2"
+                placeholder="Enter amount Ex.99"
+                ref={enteredmoney}
+              />
+            </div>
+            <div>
+              <label className="font-bold text-3xl">Description :</label>
+              <textarea
+                type="text"
+                required
+                className="w-full rounded-md border-2 p-2 my-2"
+                placeholder="Enter description"
+                ref={entereddesc}
+              />
+            </div>
+            <div>
+              <label className="font-bold text-3xl">Select category :</label>
+              <select
+                required
+                className="w-full rounded-md border-2 p-2 my-2"
+                ref={enteredcategory}
+              >
                 <option value="Rent">Rent</option>
                 <option value="Food">Food</option>
                 <option value="Bill">Bill</option>
                 <option value="Emi">Emi</option>
-            </select>
+              </select>
+            </div>
+            <div>
+              <button
+                className="bg-blue-600 text-white p-2 m-2 rounded-md"
+                type="submit"
+              >
+                Submit
+              </button>
+            </div>
           </div>
-          <div>
-            <button
-            className='bg-blue-600 text-white p-2 m-2 rounded-md'
-            type='submit'
-            >Submit</button>
-          </div>
-        </div>
-    </form>
-  
-  <DisplayExpenses expence={expence}/>
+        </form>
+      )}
 
-</div>
-  )
-}
+      <DisplayExpenses expence={expence} />
+    </div>
+  );
+};
 
-export default ExpencesForm
+export default ExpencesForm;
