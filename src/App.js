@@ -6,16 +6,14 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import HomePage from './components/pages/HomePage';
 import ProfilePage from './components/pages/ProfilePage';
 import Contextprovider from './components/store/Contextprovider';
-import ForgotpassForm from './components/body/ForgotpassForm';
 import { useDispatch } from 'react-redux';
 import { authActions } from '../src/store/index.js'
 import { useEffect } from 'react';
 
 const router = createBrowserRouter([
-  {path:'/', element:<Body/>},
-  {path:'/home', element: <HomePage/>},
+  {path:'/', element: <HomePage/>},
   {path:'/profile', element: <ProfilePage/>},
-  {path:'/forgotpass', element: <ForgotpassForm/>},
+  {path:'/auth', element: <Body/>}
 ])
 function App() {
   const userlocalId = localStorage.getItem('localId')

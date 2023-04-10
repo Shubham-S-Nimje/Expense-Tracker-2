@@ -72,18 +72,23 @@ const DisplayExpenses = (props) => {
   // },[OnDeleteHandler])
   // console.log(expence);
 
+  const DownloallexpenseHandler = (event) => {
+    event.preventDefault();
+    console.log('download button clicked')
+  }
+
   return (
     <div className="bg-blue-100 m-4 rounded-md p-4">
       {editbutonclicked && (
         <div>
-            <div className="flex justify-between p-2">
-                <h2 className="text-3xl font-bold">Edit Expense details</h2>
+          <div className="flex justify-between p-2">
+            <h2 className="text-3xl font-bold">Edit Expense details</h2>
             <button
-            className="bg-red-600 text-white p-2 m-2 rounded-md"
-            onClick={OncloseHandler}
-          >
-            Cancel
-          </button>
+              className="bg-red-600 text-white p-2 m-2 rounded-md"
+              onClick={OncloseHandler}
+            >
+              Cancel
+            </button>
           </div>
           <EditExpenseForm
             editedmoney={editedmoney}
@@ -91,67 +96,68 @@ const DisplayExpenses = (props) => {
             editedcat={editedcat}
             editedid={editedid}
           />
-          
         </div>
       )}
-    {!editbutonclicked && <table className="table-fixed w-full">
-    <thead className="bg-white border-black border-2 rounded-md">
-        <tr className="text-2xl">
-        <th>Category :</th>
-        <th>Description :</th>
-        <th>Money :</th>
-        <th>Edit :</th>
-        <th>Delete :</th>
-        </tr>
-    </thead>
-    <tbody className="table-fixed w-full justify-center text-center">
-        {/* <h1>{data.money}</h1>
+      {!editbutonclicked && (
+          <table className="table-fixed w-full">
+            <thead className="bg-white border-black border-2 rounded-md">
+              <tr className="text-2xl">
+                <th>Category :</th>
+                <th>Description :</th>
+                <th>Money :</th>
+                <th>Edit :</th>
+                <th>Delete :</th>
+              </tr>
+            </thead>
+            <tbody className="table-fixed w-full justify-center text-center">
+              {/* <h1>{data.money}</h1>
     <h1>{data.description}</h1>
     <h1>{data.category}</h1> */}
-        {props.expence &&
-        Object.keys(props.expence).map((data, index) => {
-            return (
-            <tr key={index} className="text-xl">
-                <td>{props.expence[data].expensecategory}</td>
-                <td>{props.expence[data].expensedescription} </td>
-                <td>Rs. {props.expence[data].expensemoney}/- </td>
-                <td>
-                <button
-                    className="bg-green-600 text-white p-2 m-2 rounded-md"
-                    onClick={(event) => {
-                    event.preventDefault();
-                    Seteditbutonclicked(true);
-                    editItem(
-                        props.expence[data].expensecategory,
-                        props.expence[data].expensedescription,
-                        props.expence[data].expensemoney,
-                        data
-                    );
-                    }}
-                    value={[data]}
-                >
-                    Edit
-                </button>
-                </td>
-                <td>
-                <button
-                    className="bg-red-600 text-white rounded-md p-2 m-1"
-                    value={[data]}
-                    onClick={OnDeleteHandler}
-                >
-                    Delete
-                </button>
-                </td>
-            </tr>
-            );
-        })}
-        {/* onClick=
+              {props.expence &&
+                Object.keys(props.expence).map((data, index) => {
+                  return (
+                    <tr key={index} className="text-xl">
+                      <td>{props.expence[data].expensecategory}</td>
+                      <td>{props.expence[data].expensedescription} </td>
+                      <td>Rs. {props.expence[data].expensemoney}/- </td>
+                      <td>
+                        <button
+                          className="bg-green-600 text-white p-2 m-2 rounded-md"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            Seteditbutonclicked(true);
+                            editItem(
+                              props.expence[data].expensecategory,
+                              props.expence[data].expensedescription,
+                              props.expence[data].expensemoney,
+                              data
+                            );
+                          }}
+                          value={[data]}
+                        >
+                          Edit
+                        </button>
+                      </td>
+                      <td>
+                        <button
+                          className="bg-red-600 text-white rounded-md p-2 m-1"
+                          value={[data]}
+                          onClick={OnDeleteHandler}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              {/* onClick=
         {() => {
         e.preventDefault();
         removeItem(i.id, i.category, i.timeAdded);
         }} */}
-    </tbody>
-    </table>}
+            </tbody>
+          </table>
+      )}
     </div>
   );
 };

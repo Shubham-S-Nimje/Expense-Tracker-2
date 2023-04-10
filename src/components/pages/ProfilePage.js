@@ -1,14 +1,14 @@
 import React from 'react'
 import ProfileForm from './ProfileForm'
 import Body from '../body/Body'
+import { useSelector } from 'react-redux';
 
 const ProfilePage = () => {
-  const userlocalId = localStorage.getItem('localId')
-
+  const isAuth = useSelector(state => state.auth.isAuthenticated)
 
   return (
     <>
-    {userlocalId && <div className="min-h-screen py-2">
+    {isAuth && <div className="min-h-screen py-2">
       <div className="justify-start">
         <h1 className="font-bold text-3xl px-2">Contact Details</h1>
       </div>
@@ -19,7 +19,7 @@ const ProfilePage = () => {
       </div>
       <ProfileForm />
     </div>}
-    {!userlocalId && <Body/>}
+    {!isAuth && <Body/>}
     </>
   );
 }

@@ -1,5 +1,4 @@
-import React, { useContext } from 'react'
-import ContextData from '../store/Contextdata'
+import React from 'react'
 import { useSelector } from 'react-redux';
 import { authActions } from '../../store/index.js';
 import { useDispatch } from 'react-redux';
@@ -22,7 +21,7 @@ const Header = () => {
 
   return (
     <div className='flex bg-sky-600 text-white font-bold text-3xl p-2 justify-between'>
-      <a href='/home'>Expense Tracker</a>
+      <a href='/'>Expense Tracker</a>
             {isAuth && <button 
             onClick={OnClickHandler}><a href='/'>Logout</a></button>}
             {!isAuth && <a href='/'>Login</a>}

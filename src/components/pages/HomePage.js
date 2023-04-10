@@ -2,12 +2,39 @@ import React from "react";
 import { Link } from "react-router-dom";
 import LoginForm from "../body/LoginForm";
 import ExpencesForm from "./ExpencesForm";
+import { useDispatch } from 'react-redux';
+import { ThememodeActions } from '../../store/index.js'
+import { useSelector } from 'react-redux';
 
 const HomePage = () => {
   const userlocalId = localStorage.getItem('localId')
+  const dispatch = useDispatch()
+  const isDark = useSelector(state => state.theme.isDarkmode)
+
+  const DarkthemeActivated = (event) => {
+    event.preventDefault();
+    console.log(isDark)
+    dispatch(ThememodeActions.Darkmode())
+  }
+
+  const LightthemeActivated = (event) => {
+    event.preventDefault();
+    console.log(isDark)
+    dispatch(ThememodeActions.Lightmode())
+  }
 
   return (
     <>
+    <div className={`text-end ${isDark && 'bg-red-600'}`}>
+    {!isDark && <button className="bg-black text-white rounded-md m-2 p-2"
+      onClick={DarkthemeActivated}
+      >Activate Darkmode</button>}
+      {isDark && <button
+      className="bg-white border-black border-2 rounded-md m-2 p-2"
+      onClick={LightthemeActivated}
+      >Activate Lightmode</button>}
+    </div>
+
       {userlocalId && (
         <div className="min-h-screen">
           <h1 className="textxl font-bold py-2">
