@@ -42,7 +42,7 @@ const LoginForm = () => {
       })
       .then((data) => {
         console.log(data);
-        navigate("/home");
+        navigate("/");
         localStorage.setItem('localId',data.localId)
         localStorage.setItem('idToken',data.idToken)
         localStorage.setItem('email',data.email)

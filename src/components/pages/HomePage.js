@@ -25,7 +25,7 @@ const HomePage = () => {
 
   return (
     <>
-    <div className={`text-end ${isDark && 'bg-red-600'}`}>
+    <div className={`text-end ${isDark && 'bg-black'}`}>
     {!isDark && <button className="bg-black text-white rounded-md m-2 p-2"
       onClick={DarkthemeActivated}
       >Activate Darkmode</button>}
@@ -37,7 +37,7 @@ const HomePage = () => {
 
       {userlocalId && (
         <div className="min-h-screen">
-          <h1 className="textxl font-bold py-2">
+          <h1 className={`textxl font-bold py-2 ${!isDark && 'bg-blue-600'} ${isDark && 'bg-white'} m-2 rounded-md`}>
             Welcome to Expense Tracker!..
           </h1>
           <div className="flex justify-center text-end p-2 m-2 border-2 border-black rounded-md bg-pink-100">

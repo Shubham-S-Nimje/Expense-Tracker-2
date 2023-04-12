@@ -87,7 +87,7 @@ useEffect(() => {
     }
   }
   fetchData();
-}, [userlocalId]);
+}, [expenses]);
 
 const ActivePremiumCancelhandler = () => {
   SetActivePremium(false)

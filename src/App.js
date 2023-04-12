@@ -9,6 +9,8 @@ import Contextprovider from './components/store/Contextprovider';
 import { useDispatch } from 'react-redux';
 import { authActions } from '../src/store/index.js'
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import Greeting from './components/Greeting';
 
 const router = createBrowserRouter([
   {path:'/', element: <HomePage/>},
@@ -17,6 +19,7 @@ const router = createBrowserRouter([
 ])
 function App() {
   const userlocalId = localStorage.getItem('localId')
+  const isDark = useSelector(state => state.theme.isDarkmode)
   const dispatch = useDispatch()
 
   useEffect(()=> {
@@ -26,8 +29,9 @@ function App() {
 
   return (
     <Contextprovider>
-    <div className="App">
+    <div className={`App ${isDark && 'bg-black'}`}>
       <Header/>
+      <Greeting/>
       <RouterProvider router={router}/>
       <Footer/>
     </div>
