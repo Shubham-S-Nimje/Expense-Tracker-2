@@ -10,7 +10,6 @@ import { useDispatch } from 'react-redux';
 import { authActions } from '../src/store/index.js'
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import Greeting from './components/Greeting';
 
 const router = createBrowserRouter([
   {path:'/', element: <HomePage/>},
@@ -31,7 +30,6 @@ function App() {
     <Contextprovider>
     <div className={`App ${isDark && 'bg-black'}`}>
       <Header/>
-      <Greeting/>
       <RouterProvider router={router}/>
       <Footer/>
     </div>

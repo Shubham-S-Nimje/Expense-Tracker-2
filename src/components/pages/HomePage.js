@@ -7,9 +7,9 @@ import { ThememodeActions } from '../../store/index.js'
 import { useSelector } from 'react-redux';
 
 const HomePage = () => {
-  const userlocalId = localStorage.getItem('localId')
-  const dispatch = useDispatch()
-  const isDark = useSelector(state => state.theme.isDarkmode)
+  const userlocalId = localStorage.getItem('localId');
+  const dispatch = useDispatch();
+  const isDark = useSelector(state => state.theme.isDarkmode);
 
   const DarkthemeActivated = (event) => {
     event.preventDefault();
