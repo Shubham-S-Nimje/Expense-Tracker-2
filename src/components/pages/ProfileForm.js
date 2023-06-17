@@ -9,8 +9,8 @@ const ProfileForm = () => {
 
     const userlocalId = localStorage.getItem('localId')
     const useridToken = localStorage.getItem('idToken')
-    const [username , Setusername] = useState()
-    const [userurl , Setuserurle] = useState()
+    const [username , Setusername] = useState('')
+    const [userurl , Setuserurle] = useState('')
 
     const onSubmitHandler = useCallback(async (event) => {
         event.preventDefault();
@@ -26,13 +26,14 @@ const ProfileForm = () => {
 
         try {
             const response = await fetch(`https://expense-tracker-f48d6-default-rtdb.firebaseio.com/users/${userlocalId}.json`, {
-              method: 'PUT',
+              method: 'put',
               body: JSON.stringify(users),
               headers: {
                 'Content-type': 'application/json'
               }
             });
             const data = await response.json();
+            alert('Profile Updated')
             console.log('Data Added =',data);
             }
             catch (error) {
@@ -46,8 +47,9 @@ const ProfileForm = () => {
                 const response = await fetch(`https://expense-tracker-f48d6-default-rtdb.firebaseio.com/users/${userlocalId}.json`)
                 const data = await response.json();
                 console.log(data)
-                Setusername(data.displayName)
-                Setuserurle(data.photoUrl)
+                // alert('Profile Updated')
+                data && Setusername(data.displayName)
+                data && Setuserurle(data.photoUrl)
                     }
                     catch{
                         alert('error')
@@ -59,41 +61,42 @@ const ProfileForm = () => {
 
   return (
     <div>
-      {userlocalId && (
-         <div>
-          <EmailVariForm idToken={useridToken}/>
-          
-        <form className="p-2 border-2 m-2" onSubmit={onSubmitHandler}>
-          <div className="flex">
-            <div className='align-middle m-2 p-2 '>
-              <label>Full Name :</label>
-              <input
-                className="border-2 rounded-md mx-2 px-2"
-                ref={enteredfname}
-                placeholder={username}
-              />
-            </div>
-            <div className='align-middle m-2 p-2 '>
-              <label>Profile Photo URL :</label>
-              <input
-                className="border-2 rounded-md mx-2 px-2"
-                ref={enteredpurl}
-                placeholder={userurl}
-              />
-            </div>
-            <div className='m-2 align-middle'>
-          <button className="bg-sky-600 p-2 mx-2 rounded-md text-white">
-            Update
-          </button>
-          </div>
-          </div>
-        </form>
+  {userlocalId && (
+    <div>
+      <EmailVariForm idToken={useridToken} />
 
-        <PassChangeForm idToken={useridToken}/>
+      <form className="bg-sky-600 mx-2 rounded-lg p-2 m-2" onSubmit={onSubmitHandler}>
+        <div className="flex flex-col md:flex-row lg:w-fit">
+          <div className="flex justify-between lg:justify-start items-center flex-row md:w-1/2 mb-4 md:mb-0 md:pr-2">
+            <label className="text-sm font-bold">Full Name :</label>
+            <input
+              className="border-2 rounded-md px-2 lg:mx-2 py-1"
+              ref={enteredfname}
+              placeholder={username}
+            />
+          </div>
+          <div className="flex justify-between lg:justify-start items-center flex-row md:w-1/2 mb-4 md:mb-0 md:pl-2">
+            <label className="text-sm font-bold">Profile Photo URL :</label>
+            <input
+              className="border-2 rounded-md px-2 lg:mx-2 py-1"
+              ref={enteredpurl}
+              placeholder={userurl}
+            />
+          </div>
+          <div className="md:w-auto mx-auto md:mt-0">
+            <button className="bg-red-600 p-2 rounded-md text-white">
+              Update
+            </button>
+          </div>
         </div>
-      )}
-      {!userlocalId && <LoginForm />}
+      </form>
+
+      <PassChangeForm idToken={useridToken} />
     </div>
+  )}
+  {!userlocalId && <LoginForm />}
+</div>
+
   );
 }
 

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 
 const ForgotpassForm = () => {
+  
     const enteredemail = useRef();
     const navigate = useNavigate()
 
@@ -33,7 +34,7 @@ const ForgotpassForm = () => {
               })
               .then((data) => {
                 console.log(data);
-                navigate("/");
+                navigate("/Expense-Tracker-2");
                 console.log("Passward changed link sent successfully");
               })
               .catch((err) => {

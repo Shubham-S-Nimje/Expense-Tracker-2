@@ -45,29 +45,30 @@ const PassChangeForm = (props) => {
     }
   }
   return (
-    <form className="p-2 border-2 m-2" onSubmit={onPassChangeHandler}>
-          <div className="flex">
-            <div className='align-middle m-2 p-2 '>
-              <label>New Passward :</label>
-              <input
-                className="border-2 rounded-md mx-2 px-2"
-                ref={enteredpass}
-              />
-            </div>
-            <div className='align-middle m-2 p-2 '>
-              <label>Confirm New Passward :</label>
-              <input
-                className="border-2 rounded-md mx-2 px-2"
-                ref={enteredconfirmpass}
-              />
-            </div>
-            <div className='m-2 align-middle'>
-          <button className="bg-sky-600 p-2 mx-2 rounded-md text-white">
-            Change Passward
-          </button>
-          </div>
-          </div>
-        </form>
+    <form className="bg-sky-600 mx-2 rounded-lg p-2 m-2">
+  <div className="flex flex-col md:flex-row items-center">
+    <div className="m-2 p-2">
+      <label className="block mb-1 font-bold">New Password :</label>
+      <input
+        className="border-2 rounded-md mx-2 px-2 py-1 w-full"
+        ref={enteredpass}
+      />
+    </div>
+    <div className="m-2 p-2">
+      <label className="block mb-1 font-bold">Confirm New Password :</label>
+      <input
+        className="border-2 rounded-md mx-2 px-2 py-1 w-full"
+        ref={enteredconfirmpass}
+      />
+    </div>
+    <div className="m-2 text-center">
+      <button className="bg-red-600 p-2 rounded-md text-white w-full">
+        Change Password
+      </button>
+    </div>
+  </div>
+</form>
+
   )
 }
 

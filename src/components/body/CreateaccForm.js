@@ -40,8 +40,8 @@ const CreateaccForm = () => {
           }
         })
         .then((data) => {
-          console.log(data);
-          navigate("/");
+          // console.log(data);
+          navigate("/Expense-Tracker-2/profile");
           console.log("User has successfully signed up");
         })
         .catch((err) => {

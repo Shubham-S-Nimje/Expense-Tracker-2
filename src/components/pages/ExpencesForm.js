@@ -67,6 +67,7 @@ const SubmitExpenses = (event) => {
     .then((data) => {
       console.log(data);
       console.log("expense added successfully");
+      setenterexpense(false);
     })
     .catch((err) => {
       alert(err.message);
@@ -81,113 +82,117 @@ useEffect(() => {
       );
       const data = await response.json();
       console.log(data);
-      Setexpence(data);
+      data && Setexpence(data);
     } catch {
       alert("error");
     }
   }
   fetchData();
-}, [expenses]);
+}, [SubmitExpenses]);
 
 const ActivePremiumCancelhandler = () => {
   SetActivePremium(false)
 }
 
-// console.log(expenseitems)
+console.log(expence)
 return (
   <div>
-    {!enterexpense && (
-      <button
-        className="m-4 bg-white font-bold text-2xl p-2 rounded-md"
-        onClick={Onaddexpenseclickhandler}
-      >
-        Add Expense
-      </button>
-    )}
-
-    {enterexpense && !ActivePremium && (
-      <form onSubmit={SubmitExpenses}
-      className="border-2 m-4 p-8 bg-blue-100 rounded-md ">
-        <div className="flex justify-between p-4 rounded-md bg-blue-600">
-            <h2 className="text-white align-middle text-3xl font-bold">
-              Enter Expense Details :
+  {!enterexpense ? (
+    <button
+      className="m-4 bg-white font-bold lg:text-2xl p-2 rounded-md sm:text-sm"
+      onClick={Onaddexpenseclickhandler}
+    >
+      Add Expense
+    </button>
+  ) : (
+    <>
+      {!ActivePremium ? (
+        <form
+          onSubmit={SubmitExpenses}
+          className="border-2 m-4 p-8 bg-blue-100 rounded-md"
+        >
+          <div className="flex justify-between p-4 rounded-md bg-blue-600">
+            <h2 className="text-sm items-center text-center sm:text-sm lg:text-3xl text-white align-middle font-bold">
+              Enter Expense Details:
             </h2>
             <button
-              className="bg-red-600 text-white p-2 rounded-md"
+              className="text-sm items-center text-center sm:text-sm lg:text-3xl bg-red-600 text-white p-1 lg:p-2 rounded-md"
               onClick={Oncloseexpenseclickhandler}
             >
               Close
             </button>
           </div>
-        <div className="justify-start text-left mt-2">
-          <div>
-            <label className="font-bold text-3xl">Money spent :</label>
-            <input
-              type="number"
-              required
-              className="w-full rounded-md border-2 p-2 my-2"
-              placeholder="Enter amount Ex.99"
-              ref={enteredmoney}
-            />
+          <div className="justify-start text-left mt-2">
+            <div>
+              <label className="font-bold lg:text-3xl">Money spent:</label>
+              <input
+                type="number"
+                required
+                className="w-full rounded-md border-2 p-2 my-2"
+                placeholder="Enter amount Ex.99"
+                ref={enteredmoney}
+              />
+            </div>
+            <div>
+              <label className="font-bold lg:text-3xl">Description:</label>
+              <textarea
+                type="text"
+                required
+                className="w-full rounded-md border-2 p-2 my-2"
+                placeholder="Enter description"
+                ref={entereddesc}
+              />
+            </div>
+            <div>
+              <label className="font-bold lg:text-3xl">Select category:</label>
+              <select
+                required
+                className="w-full rounded-md border-2 p-2 my-2"
+                ref={enteredcategory}
+              >
+                <option value="Rent">Rent</option>
+                <option value="Food">Food</option>
+                <option value="Bill">Bill</option>
+                <option value="Emi">Emi</option>
+              </select>
+            </div>
+            <div>
+              <button
+                className="bg-blue-600 text-white p-2 m-2 rounded-md"
+                type="submit"
+              >
+                Submit
+              </button>
+            </div>
           </div>
-          <div>
-            <label className="font-bold text-3xl">Description :</label>
-            <textarea
-              type="text"
-              required
-              className="w-full rounded-md border-2 p-2 my-2"
-              placeholder="Enter description"
-              ref={entereddesc}
-            />
-          </div>
-          <div>
-            <label className="font-bold text-3xl">Select category :</label>
-            <select
-              required
-              className="w-full rounded-md border-2 p-2 my-2"
-              ref={enteredcategory}
-            >
-              <option value="Rent">Rent</option>
-              <option value="Food">Food</option>
-              <option value="Bill">Bill</option>
-              <option value="Emi">Emi</option>
-            </select>
-          </div>
-          <div>
-            <button
-              className="bg-blue-600 text-white p-2 m-2 rounded-md"
-              type="submit"
-            >
-              Submit
-            </button>
-          </div>
+        </form>
+      ) : (
+        <div>
+          <button className="bg-green-600 text-white p-2 m-2 rounded-md" type="submit">
+            Activate Premium
+          </button>
+          <button
+            className="bg-red-600 text-white p-2 m-2 rounded-md"
+            type="submit"
+            onClick={ActivePremiumCancelhandler}
+          >
+            Cancel
+          </button>
         </div>
-      </form>
-    )}
+      )}
+    </>
+  )}
 
-    {ActivePremium && 
-    <div>
-    <button
-    className="bg-green-600 text-white p-2 m-2 rounded-md"
-    type="submit"
+  <CSVLink
+    className="m-4 bg-white sm:text-sm font-bold lg:text-2xl p-2 rounded-md"
+    data={Object.values(expence)}
+    filename="data.csv"
   >
-    Activate Premium
-  </button>
-  <button
-    className="bg-red-600 text-white p-2 m-2 rounded-md"
-    type="submit"
-    onClick={ActivePremiumCancelhandler}
-  >
-    Cancel
-  </button>
-  </div>}
+    Download Expenses
+  </CSVLink>
+  <DisplayExpenses expence={expence} />
+</div>
 
-<CSVLink 
-        className="m-4 bg-white font-bold text-2xl p-2 rounded-md"
-        data={expenses}>Download Expenses</CSVLink>
-    <DisplayExpenses expence={expence} />
-    
-  </div>
 );
 };
 

@@ -37,8 +37,10 @@ const EditExpenseForm = (props) => {
         }
       })
       .then((data) => {
-        console.log(data);
+        // console.log(data);
+        props.OncloseHandler()
         console.log("expense edited successfully");
+        alert("expense edited successfully");
       })
       .catch((err) => {
         alert(err.message);

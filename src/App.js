@@ -12,9 +12,9 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 const router = createBrowserRouter([
-  {path:'/', element: <HomePage/>},
-  {path:'/profile', element: <ProfilePage/>},
-  {path:'/auth', element: <Body/>}
+  {path:'/Expense-Tracker-2', element: <HomePage/>},
+  {path:'/Expense-Tracker-2/profile', element: <ProfilePage/>},
+  {path:'/Expense-Tracker-2/auth', element: <Body/>}
 ])
 function App() {
   const userlocalId = localStorage.getItem('localId')

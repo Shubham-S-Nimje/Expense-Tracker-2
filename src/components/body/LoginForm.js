@@ -42,10 +42,10 @@ const LoginForm = () => {
       })
       .then((data) => {
         console.log(data);
-        navigate("/");
-        localStorage.setItem('localId',data.localId)
-        localStorage.setItem('idToken',data.idToken)
-        localStorage.setItem('email',data.email)
+        data && localStorage.setItem('localId',data.localId)
+        data && localStorage.setItem('idToken',data.idToken)
+        data && localStorage.setItem('email',data.email)
+        navigate("/Expense-Tracker-2/profile");
         dispatch(authActions.login())
         console.log("User has successfully signed in");
       })
@@ -95,7 +95,6 @@ const LoginForm = () => {
         </div>
       </form>
     </div>}
-    {isAuth && <ProfilePage/>}
     </>
   );
 }
