@@ -50,6 +50,7 @@ const ProfileForm = () => {
                 // alert('Profile Updated')
                 data && Setusername(data.displayName)
                 data && Setuserurle(data.photoUrl)
+                localStorage.setItem('photoUrl',data.photoUrl)
                     }
                     catch{
                         alert('error')

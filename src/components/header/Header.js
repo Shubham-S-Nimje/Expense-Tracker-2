@@ -12,6 +12,7 @@ const Header = () => {
     localStorage.setItem('localId','')
         localStorage.setItem('idToken','')
         localStorage.setItem('email','')
+        localStorage.setItem('photoUrl','')
         window.location.reload();
         dispatch(authActions.logout());
   }
