@@ -1,12 +1,12 @@
 import React, { useRef } from 'react'
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 
 const CreateaccForm = () => {
   const enteredemail = useRef();
   const enteredpass = useRef();
   const enteredconfirmpass = useRef();
-  const navigate = useNavigate()
+  const history = useHistory()
 
 
   const OnSubmitHandler = (event) => {
@@ -41,7 +41,7 @@ const CreateaccForm = () => {
         })
         .then((data) => {
           // console.log(data);
-          navigate("/Expense-Tracker-2/profile");
+          history.push("/Expense-Tracker-2/profile");
           console.log("User has successfully signed up");
         })
         .catch((err) => {

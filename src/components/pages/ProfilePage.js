@@ -2,14 +2,14 @@ import React from "react";
 import ProfileForm from "./ProfileForm";
 import Body from "../body/Body";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router";
+import { useHistory } from "react-router-dom";
 
 const ProfilePage = () => {
   const isAuth = useSelector((state) => state.auth.isAuthenticated);
-  const navigate = useNavigate();
+  const history = useHistory();
   const userimage = localStorage.getItem("photoUrl");
   const oncancelhandler = () => {
-    navigate("/Expense-Tracker-2");
+    history.push("/Expense-Tracker-2");
   };
 
   return (
@@ -29,7 +29,7 @@ const ProfilePage = () => {
                   />
                 </div>
               )}
-              {!userimage && <div>No image uploaded</div>}
+              {!userimage && <div className="flex justify-center items-center m-4">No image uploaded</div>}
             </div>
             <div className="md:w-2/3">
               <h1 className="bg-sky-600 m-2 rounded-lg font-bold lg:text-3xl p-2">

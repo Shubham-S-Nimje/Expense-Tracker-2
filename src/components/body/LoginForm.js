@@ -1,6 +1,5 @@
 import React, { useRef } from 'react'
-import { useNavigate } from "react-router-dom";
-import ProfilePage from '../pages/ProfilePage';
+import { useHistory } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { authActions } from '../../store/index.js'
 import { useSelector } from 'react-redux';
@@ -8,7 +7,7 @@ import { useSelector } from 'react-redux';
 const LoginForm = () => {
   const enteredemail = useRef();
   const enteredpass = useRef();
-  const navigate = useNavigate()
+  const history = useHistory()
   const dispatch = useDispatch()
   const isAuth = useSelector(state => state.auth.isAuthenticated)
 
@@ -45,7 +44,7 @@ const LoginForm = () => {
         data && localStorage.setItem('localId',data.localId)
         data && localStorage.setItem('idToken',data.idToken)
         data && localStorage.setItem('email',data.email)
-        navigate("/Expense-Tracker-2/profile");
+        history.push("/Expense-Tracker-2/profile");
         dispatch(authActions.login())
         console.log("User has successfully signed in");
       })

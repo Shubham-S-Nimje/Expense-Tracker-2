@@ -1,12 +1,12 @@
 import React from 'react'
 import { useRef } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 
 const ForgotpassForm = () => {
   
     const enteredemail = useRef();
-    const navigate = useNavigate()
+    const history = useHistory()
 
 
     const ForgotPassHandler =(event)=> {
@@ -34,7 +34,7 @@ const ForgotpassForm = () => {
               })
               .then((data) => {
                 console.log(data);
-                navigate("/Expense-Tracker-2");
+                history.push("/Expense-Tracker-2");
                 console.log("Passward changed link sent successfully");
               })
               .catch((err) => {
