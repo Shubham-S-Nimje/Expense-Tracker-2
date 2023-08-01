@@ -45,7 +45,7 @@ const SubmitExpenses = (event) => {
   };
 
   fetch(
-    `https://expense-tracker-f48d6-default-rtdb.firebaseio.com/users/${userlocalId}/expences.json`,
+    `http://localhost:4000/expences/user/:id`,
     {
       method: "POST",
       body: JSON.stringify(data),
@@ -78,7 +78,7 @@ useEffect(() => {
   async function fetchData() {
     try {
       const response = await fetch(
-        `https://expense-tracker-f48d6-default-rtdb.firebaseio.com/users/${userlocalId}/expences.json`
+        `http://localhost:4000/expences/user/:id`
       );
       const data = await response.json();
       console.log(data);

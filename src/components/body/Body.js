@@ -17,7 +17,7 @@ const Body = () => {
     }
 
   return (
-    <div className="min-h-full py-12 min-h-screen">
+    <div className="py-12 min-h-screen">
       {signin && (
         <div>
           <label className="underline m-6 text-center text-3xl font-bold text-gray-900">
