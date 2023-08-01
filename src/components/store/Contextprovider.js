@@ -13,7 +13,7 @@ const Contextprovider = (props) => {
         expensecategory:newexpensecategory}]
     })
   }
-console.log(expenses)
+// console.log(expenses)
   
   return (
     <ContextData.Provider value={{expenses,expensedata}}>

@@ -30,7 +30,7 @@ const EmailVariForm = (props) => {
         }
       })
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         alert("Check your mail for Varification link");
         console.log("User Email successfully send for varification");
       })
@@ -44,6 +44,7 @@ const EmailVariForm = (props) => {
         <label className="text-sm font-bold">Email :</label>
         <input
           className="border-2 rounded-md mx-2 px-2 py-1"
+          defaultValue={useremail}
           placeholder={useremail}
         />
       </div>

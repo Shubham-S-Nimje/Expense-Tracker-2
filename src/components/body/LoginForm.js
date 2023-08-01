@@ -40,9 +40,9 @@ const LoginForm = () => {
         }
       })
       .then((data) => {
-        // console.log(data.user[0]);
-        data && localStorage.setItem("localId", data.user[0].id);
-        data && localStorage.setItem("email", data.user[0].email);
+        console.log(data);
+        data && localStorage.setItem("localId", data.user.authToken);
+        // data && localStorage.setItem("email", data.user[0].email);
         history.push("/Expense-Tracker-2/profile");
         dispatch(authActions.login());
         console.log("User has successfully signed in");

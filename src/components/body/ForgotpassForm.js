@@ -33,7 +33,7 @@ const ForgotpassForm = () => {
                 }
               })
               .then((data) => {
-                console.log(data);
+                // console.log(data);
                 history.push("/Expense-Tracker-2");
                 console.log("Passward changed link sent successfully");
               })

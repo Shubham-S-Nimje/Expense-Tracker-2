@@ -23,7 +23,7 @@ const DisplayExpenses = (props) => {
     const expenseid = await event.target.value;
     // console.log(updatedexpence[event.target.value].userid);
 
-    const expenseuserid = updatedexpence[expenseid].userid;
+    const expenseuserid = updatedexpence[expenseid].id;
     // console.log(expenseuserid);
     fetch(`http://localhost:4000/delete-expences/${expenseuserid}`, {
       method: "DELETE",
@@ -78,7 +78,7 @@ const DisplayExpenses = (props) => {
   // }
   // fetchData();
   // },[OnDeleteHandler])
-  console.log(updatedexpence);
+  // console.log(updatedexpence);
 
   return (
     <div className="bg-blue-100 m-4 rounded-md p-4">

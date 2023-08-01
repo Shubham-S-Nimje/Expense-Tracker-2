@@ -41,11 +41,12 @@ const SubmitExpenses = (event) => {
     expensemoney: expensemoney,
     expensedescription: expensedescription,
     expensecategory: expensecategory,
+    userid: userlocalId,
     returnSecureToken: true,
   };
 
   fetch(
-    `http://localhost:4000/add-expences/user/:id`,
+    `http://localhost:4000/add-expences`,
     {
       method: "POST",
       body: JSON.stringify(data),
@@ -59,13 +60,13 @@ const SubmitExpenses = (event) => {
         return res.json();
       } else {
         return res.json().then((data) => {
-          let errorMessage = "Authentication failed";
+          let errorMessage = "Unable to add expense";
           throw new Error(errorMessage);
         });
       }
     })
     .then((data) => {
-      console.log(data);
+      // console.log(data);
       console.log("expense added successfully");
       setenterexpense(false);
     })
@@ -78,11 +79,17 @@ useEffect(() => {
   async function fetchData() {
     try {
       const response = await fetch(
-        // `http://localhost:4000/fetch-expences/user/:id`
-        `http://localhost:4000/fetch-expences`
+        `http://localhost:4000/fetch-expences`,
+        {
+          method: "POST",
+          body: JSON.stringify({userlocalId}),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
       const data = await response.json();
-      console.log(data.expense);
+      // console.log(data.expense);
       data && Setexpence(data.expense);
     } catch {
       alert("error");
@@ -95,7 +102,7 @@ const ActivePremiumCancelhandler = () => {
   SetActivePremium(false)
 }
 
-console.log(expence)
+// console.log(expence)
 return (
   <div>
   {!enterexpense ? (

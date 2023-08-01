@@ -34,7 +34,7 @@ const PassChangeForm = (props) => {
           }
         })
         .then((data) => {
-          console.log(data);
+          // console.log(data);
           console.log("Passward changed successfully");
         })
         .catch((err) => {

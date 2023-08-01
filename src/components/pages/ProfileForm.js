@@ -46,7 +46,7 @@ const ProfileForm = () => {
             try{
                 const response = await fetch(`https://expense-tracker-f48d6-default-rtdb.firebaseio.com/users/${userlocalId}.json`)
                 const data = await response.json();
-                console.log(data)
+                // console.log(data)
                 // alert('Profile Updated')
                 data && Setusername(data.displayName)
                 data && Setuserurle(data.photoUrl)
