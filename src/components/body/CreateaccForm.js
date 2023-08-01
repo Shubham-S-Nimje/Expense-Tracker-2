@@ -1,30 +1,31 @@
-import React, { useRef } from 'react'
+import React, { useRef } from "react";
 import { useHistory } from "react-router-dom";
 
-
 const CreateaccForm = () => {
+  const enteredusername = useRef();
   const enteredemail = useRef();
   const enteredpass = useRef();
   const enteredconfirmpass = useRef();
-  const history = useHistory()
-
+  const history = useHistory();
 
   const OnSubmitHandler = (event) => {
     event.preventDefault();
     // console.log(enteredemail.current.value);
     // console.log(enteredconfirmpass.current.value);
     // console.log(enteredpass.current.value);
+    const obj = {
+      username: enteredusername.current.value,
+      email: enteredemail.current.value,
+      password: enteredpass.current.value,
+      // returnSecureToken: true,
+    };
+
     if (enteredpass.current.value === enteredconfirmpass.current.value) {
-      const url =
-        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA8YcdRz-mt4-Y3rPxSLQEVxw4DlXJ0wB4";
+      const url = "http://localhost:4000/add-user";
 
       fetch(url, {
         method: "POST",
-        body: JSON.stringify({
-          email: enteredemail.current.value,
-          password: enteredpass.current.value,
-          returnSecureToken: true,
-        }),
+        body: JSON.stringify(obj),
         headers: {
           "Content-Type": "application/json",
         },
@@ -34,8 +35,9 @@ const CreateaccForm = () => {
             return res.json();
           } else {
             return res.json().then((data) => {
-              let errorMessage = "Authentication failed";
+              let errorMessage = data.error;
               throw new Error(errorMessage);
+              // console.log(data.error)
             });
           }
         })
@@ -45,7 +47,7 @@ const CreateaccForm = () => {
           console.log("User has successfully signed up");
         })
         .catch((err) => {
-          alert(err.message);
+          alert(err);
         });
     } else {
       alert("Please check your password");
@@ -58,6 +60,17 @@ const CreateaccForm = () => {
         onSubmit={OnSubmitHandler}
       >
         <div className="text-left">
+          <div>
+            <label className="font-bold">Username :</label>
+            <input
+              type="text"
+              autoComplete="text"
+              required
+              ref={enteredusername}
+              className="w-full rounded-md border-2 p-2"
+              placeholder="Username"
+            />
+          </div>
           <div>
             <label className="font-bold">Email address :</label>
             <input
@@ -104,6 +117,6 @@ const CreateaccForm = () => {
       </form>
     </div>
   );
-}
+};
 
-export default CreateaccForm
+export default CreateaccForm;
