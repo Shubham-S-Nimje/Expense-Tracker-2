@@ -45,7 +45,7 @@ const SubmitExpenses = (event) => {
   };
 
   fetch(
-    `http://localhost:4000/expences/user/:id`,
+    `http://localhost:4000/add-expences/user/:id`,
     {
       method: "POST",
       body: JSON.stringify(data),
@@ -78,17 +78,18 @@ useEffect(() => {
   async function fetchData() {
     try {
       const response = await fetch(
-        `http://localhost:4000/expences/user/:id`
+        // `http://localhost:4000/fetch-expences/user/:id`
+        `http://localhost:4000/fetch-expences`
       );
       const data = await response.json();
-      console.log(data);
-      data && Setexpence(data);
+      console.log(data.expense);
+      data && Setexpence(data.expense);
     } catch {
       alert("error");
     }
   }
   fetchData();
-}, [SubmitExpenses]);
+}, []);
 
 const ActivePremiumCancelhandler = () => {
   SetActivePremium(false)
