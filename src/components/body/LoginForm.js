@@ -17,7 +17,7 @@ const LoginForm = () => {
     // console.log(enteredpass.current.value);
 
     const url =
-      "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA8YcdRz-mt4-Y3rPxSLQEVxw4DlXJ0wB4";
+      "http://localhost:4000/login-user";
     fetch(url, {
       method: "POST",
       body: JSON.stringify({

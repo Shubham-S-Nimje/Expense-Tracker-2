@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { useState } from "react";
 import { useHistory } from "react-router-dom";
 
 const CreateaccForm = () => {
@@ -6,6 +7,7 @@ const CreateaccForm = () => {
   const enteredemail = useRef();
   const enteredpass = useRef();
   const enteredconfirmpass = useRef();
+  const [ShowPass, SetShowpass] = useState("password");
   const history = useHistory();
 
   const OnSubmitHandler = (event) => {
@@ -43,7 +45,7 @@ const CreateaccForm = () => {
         })
         .then((data) => {
           // console.log(data);
-          history.push("/Expense-Tracker-2/profile");
+          history.push("/Expense-Tracker-2/auth");
           console.log("User has successfully signed up");
         })
         .catch((err) => {
@@ -51,6 +53,14 @@ const CreateaccForm = () => {
         });
     } else {
       alert("Please check your password");
+    }
+  };
+
+  const ShowpasswordHandler = () => {
+    if (ShowPass === "password") {
+      SetShowpass("text");
+    } else {
+      SetShowpass("password");
     }
   };
   return (
@@ -96,7 +106,7 @@ const CreateaccForm = () => {
           <div>
             <label className="font-bold">Confirm Password :</label>
             <input
-              type="password"
+              type={ShowPass}
               autoComplete="current-password"
               required
               ref={enteredconfirmpass}
@@ -104,6 +114,11 @@ const CreateaccForm = () => {
               placeholder="Password"
             />
           </div>
+        </div>
+
+        <div className="text-left">
+          <input type="checkbox" className="m-1" onClick={ShowpasswordHandler} />
+          Show Password
         </div>
 
         <div>
