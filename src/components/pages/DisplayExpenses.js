@@ -29,6 +29,7 @@ const DisplayExpenses = (props) => {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
+        Authorization: userlocalId,
       },
     })
       .then((res) => {

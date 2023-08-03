@@ -23,11 +23,11 @@ const ThemeSlice = createSlice({
     reducers : {
         Darkmode(state) {
             state.isDarkmode = true;
-            console.log('Darkmode')
+            // console.log('Darkmode')
         },
         Lightmode(state) {
             state.isDarkmode = false;
-            console.log('Lightmode')
+            // console.log('Lightmode')
         },
     }
 });

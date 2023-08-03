@@ -48,8 +48,8 @@ const ProfileForm = () => {
                 const data = await response.json();
                 // console.log(data)
                 // alert('Profile Updated')
-                data && Setusername(data.displayName)
-                data && Setuserurle(data.photoUrl)
+                // data && Setusername(data.displayName)
+                // data && Setuserurle(data.photoUrl)
                 localStorage.setItem('photoUrl',data.photoUrl)
                     }
                     catch{
