@@ -4,7 +4,7 @@ import Body from './components/body/Body';
 import Header from './components/header/Header';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import HomePage from './components/pages/HomePage';
-import ProfilePage from './components/pages/ProfilePage';
+import ProfilePage from './components/body/ProfilePage';
 import Contextprovider from './components/store/Contextprovider';
 import { useDispatch } from 'react-redux';
 import { authActions } from '../src/store/index.js';

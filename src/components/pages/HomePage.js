@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import ExpencesForm from "./ExpencesForm";
+import ExpencesForm from "../body/ExpencesForm";
 import { useDispatch, useSelector } from "react-redux";
 import { ThememodeActions } from "../../store/index.js";
 import Body from "../body/Body";
 import { Fragment } from "react";
 import axios from "axios";
+import ProfilePage from "../body/ProfilePage";
+import { useHistory } from "react-router-dom";
+import Leaderboard from "../body/Leaderboard";
 
 const HomePage = () => {
   const userlocalId = localStorage.getItem("localId");
   const [islogin, Setislogin] = useState(false);
+  const [showProfile, SetshowProfile] = useState(false);
+  const [isPremium, SetisPremium] = useState(false);
+  const [Displaylb, SetDisplaylb] = useState(false);
   const dispatch = useDispatch();
+  const history = useHistory();
   const isDark = useSelector((state) => state.theme.isDarkmode);
 
   useEffect(() => {
@@ -25,6 +32,16 @@ const HomePage = () => {
   const LightthemeActivated = (event) => {
     event.preventDefault();
     dispatch(ThememodeActions.Lightmode());
+  };
+
+  const LeaderboardHandler = () => {
+    // console.log(Displaylb);
+    SetDisplaylb(!Displaylb);
+  };
+
+  const OpenprofileHandler = (event) => {
+    SetshowProfile(true);
+    history.push("/Expense-Tracker-2");
   };
 
   function loadScript(src) {
@@ -120,11 +137,36 @@ const HomePage = () => {
     }
   };
 
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch(`http://localhost:4000/fetch-user`, {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+            Authorization: userlocalId,
+          },
+        });
+        const data = await response.json();
+        // console.log(data)
+        if (data.user.ispremiumuser === true) {
+          // console.log(data.user.ispremiumuser)
+          SetisPremium(true);
+        }
+      } catch {
+        alert("error");
+      }
+    }
+    {
+      userlocalId && fetchData();
+    }
+  }, []);
+
   return (
     <Fragment>
       <div className="justify-between flex">
         <div className={`text-end ${isDark ? "bg-black" : ""}`}>
-          {islogin && (
+          {islogin && !isPremium && (
             <button
               className="bg-red-600 text-white rounded-md m-2 p-2"
               onClick={ActivatePremium}
@@ -132,7 +174,20 @@ const HomePage = () => {
               Buy Premium
             </button>
           )}
+          {isPremium && (
+            <div className="bg-green-600 text-white rounded-md m-2 p-2">
+              Premium User
+            </div>
+          )}
         </div>
+        {isPremium && (
+          <button
+            className="bg-red-600 text-white rounded-md m-2 p-2"
+            onClick={LeaderboardHandler}
+          >
+            Leader Board
+          </button>
+        )}
         <div className={`text-end ${isDark ? "bg-black" : ""}`}>
           {!isDark && (
             <button
@@ -153,8 +208,8 @@ const HomePage = () => {
         </div>
       </div>
 
-      {islogin ? (
-        <div className="min-h-screen">
+      {!showProfile && islogin ? (
+        <div className="min-h-fit">
           <h1
             className={`text-xl font-bold py-2 bg-blue-600 text-white m-2 rounded-md border-2 border-white`}
           >
@@ -162,12 +217,20 @@ const HomePage = () => {
           </h1>
           <div className="flex justify-center text-end p-2 m-2 border-2 border-black rounded-md bg-pink-100">
             <h2>Your profile is incomplete</h2>
-            <Link
-             to="/Expense-Tracker-2/profile">
-              <span className="text-sky-600 p-2 m-2 rounded-md">
+            <Link to="/Expense-Tracker-2/profile">
+              <button
+                className="text-sky-600 mx-2 rounded-md"
+                onClick={OpenprofileHandler}
+              >
                 Complete Now
-              </span>
+              </button>
             </Link>
+            {/* <Link
+            to="/Expense-Tracker-2/profile">
+            <span className="text-sky-600 p-2 m-2 rounded-md">
+              Complete Now
+            </span>
+          </Link> */}
           </div>
           <div className="bg-blue-600 rounded-md m-2 p-2 border-2 border-white">
             <ExpencesForm />
@@ -176,6 +239,8 @@ const HomePage = () => {
       ) : (
         <Body />
       )}
+      {showProfile && <ProfilePage userlocalId={userlocalId} />}
+      {Displaylb && <Leaderboard />}
     </Fragment>
   );
 };

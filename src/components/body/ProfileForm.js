@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import LoginForm from '../body/LoginForm';
+import LoginForm from './LoginForm';
 import PassChangeForm from './PassChangeForm';
 import EmailVariForm from './EmailVariForm';
 
@@ -50,7 +50,7 @@ const ProfileForm = () => {
                 // alert('Profile Updated')
                 // data && Setusername(data.displayName)
                 // data && Setuserurle(data.photoUrl)
-                localStorage.setItem('photoUrl',data.photoUrl)
+                // localStorage.setItem('photoUrl',data.photoUrl)
                     }
                     catch{
                         alert('error')
@@ -66,7 +66,7 @@ const ProfileForm = () => {
     <div>
       <EmailVariForm idToken={useridToken} />
 
-      <form className="bg-sky-600 mx-2 rounded-lg p-2 m-2" onSubmit={onSubmitHandler}>
+      <form className="bg-sky-600 mx-2 rounded-lg p-2 m-2 text-white" onSubmit={onSubmitHandler}>
         <div className="flex flex-col md:flex-row lg:w-fit">
           <div className="flex justify-between lg:justify-start items-center flex-row md:w-1/2 mb-4 md:mb-0 md:pr-2">
             <label className="text-sm font-bold">Full Name :</label>
@@ -85,7 +85,7 @@ const ProfileForm = () => {
             />
           </div>
           <div className="md:w-auto mx-auto md:mt-0">
-            <button className="bg-red-600 p-2 rounded-md text-white">
+            <button className="bg-red-600 p-2 rounded-md">
               Update
             </button>
           </div>

@@ -65,6 +65,7 @@ const DisplayExpenses = (props) => {
     oldexpenses && Setupdatedexpence(oldexpenses);
   }, [editItem, OnDeleteHandler]);
 
+  // console.log(oldexpenses,updatedexpence)
   // useEffect(()=>{
   //     async function fetchData() {
   //     try{

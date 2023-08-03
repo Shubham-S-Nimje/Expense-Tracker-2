@@ -4,8 +4,10 @@ import Body from "../body/Body";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-const ProfilePage = () => {
-  const isAuth = useSelector((state) => state.auth.isAuthenticated);
+const ProfilePage = (props) => {
+  // const isAuth = useSelector((state) => state.auth.isAuthenticated);
+  const isAuth = props.userlocalId;
+  const userlocalId = localStorage.getItem("localId");
   const history = useHistory();
   const userimage = localStorage.getItem("photoUrl");
   const oncancelhandler = () => {
@@ -21,7 +23,7 @@ const ProfilePage = () => {
               {userimage && (
                 <div className="flex justify-center items-center m-4">
                   <img
-                  className="w-full"
+                    className="w-full"
                     src={`${userimage}`}
                     width={100}
                     height={100}
@@ -29,9 +31,13 @@ const ProfilePage = () => {
                   />
                 </div>
               )}
-              {!userimage && <div className="flex justify-center items-center m-4">No image uploaded</div>}
+              {!userimage && (
+                <div className="flex justify-center items-center m-4">
+                  No image uploaded
+                </div>
+              )}
             </div>
-            <div className="md:w-2/3">
+            <div className="md:w-2/3  text-white">
               <h1 className="bg-sky-600 m-2 rounded-lg font-bold lg:text-3xl p-2">
                 Contact Details
               </h1>

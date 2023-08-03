@@ -40,7 +40,7 @@ const LoginForm = () => {
         }
       })
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         data && localStorage.setItem("localId", data.user.authToken);
         // data && localStorage.setItem("email", data.user[0].email);
         history.push("/Expense-Tracker-2/profile");
