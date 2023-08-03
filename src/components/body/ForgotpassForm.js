@@ -1,46 +1,45 @@
-import React from 'react'
-import { useRef } from 'react';
+import React from "react";
+import { useRef } from "react";
 import { useHistory } from "react-router-dom";
 
-
 const ForgotpassForm = () => {
-  
-    const enteredemail = useRef();
-    const history = useHistory()
+  const userlocalId = localStorage.getItem("localId");
+  const enteredemail = useRef();
+  const history = useHistory();
 
+  const ForgotPassHandler = (event) => {
+    event.preventDefault();
 
-    const ForgotPassHandler =(event)=> {
-        event.preventDefault();
-
-        fetch("https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyA8YcdRz-mt4-Y3rPxSLQEVxw4DlXJ0wB4", {
-              method: "POST",
-              body: JSON.stringify({
-                requestType: "PASSWORD_RESET",
-                email: enteredemail.current.value,
-              }),
-              headers: {
-                "Content-Type": "application/json",
-              },
-            })
-              .then((res) => {
-                if (res.ok) {
-                  return res.json();
-                } else {
-                  return res.json().then((data) => {
-                    let errorMessage = "Authentication failed";
-                    throw new Error(errorMessage);
-                  });
-                }
-              })
-              .then((data) => {
-                // console.log(data);
-                history.push("/Expense-Tracker-2");
-                console.log("Passward changed link sent successfully");
-              })
-              .catch((err) => {
-                alert(err.message);
-              });
-      }
+    fetch("http://localhost:4000/forgotpassword", {
+      method: "POST",
+      body: JSON.stringify({
+        // requestType: "PASSWORD_RESET",
+        email: enteredemail.current.value,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return res.json().then((data) => {
+            console.log(data)
+            let errorMessage = "Authentication failed";
+            throw new Error(errorMessage);
+          });
+        }
+      })
+      .then((data) => {
+        // console.log(data);
+        history.push("/Expense-Tracker-2");
+        console.log("Passward changed link sent successfully");
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+  };
   return (
     <div>
       <form
@@ -66,11 +65,10 @@ const ForgotpassForm = () => {
           >
             Submit
           </button>
-          </div>
-
+        </div>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default ForgotpassForm
+export default ForgotpassForm;
