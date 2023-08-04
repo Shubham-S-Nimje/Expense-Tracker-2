@@ -11,6 +11,7 @@ const ExpencesForm = (props) => {
 
   const [expence, Setexpence] = useState([]);
   const [filteredexpence, Setfilteredexpence] = useState([]);
+  const [downloadUrl, SetdownloadUrl] = useState("");
   const [enterexpense, setenterexpense] = useState(false);
   const [ActivePremium, SetActivePremium] = useState(false);
 
@@ -154,6 +155,36 @@ const ExpencesForm = (props) => {
     }
   };
 
+  const downloadExpense = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:4000/user/download-expenses`,
+        {
+          method: "POST",
+          body: JSON.stringify({ userid: userlocalId }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: userlocalId,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        // console.log(response.statusText)
+        throw new Error(response.statusText);
+      }
+
+      const data = await response.blob();
+      // console.log(data);
+      const url = URL.createObjectURL(data);
+      // console.log(url);
+      SetdownloadUrl(url);
+    } catch (error) {
+      alert(error.message);
+    }
+    // console.log('download clicked')
+  };
+
   // console.log(expence)
   return (
     <div>
@@ -248,15 +279,44 @@ const ExpencesForm = (props) => {
         </>
       )}
 
+      {!downloadUrl && (
+        <button
+          className="bg-white sm:text-sm font-bold lg:text-2xl p-1 rounded-md"
+          onClick={downloadExpense}
+        >
+          Download Expenses
+        </button>
+      )}
+      {downloadUrl && (
+        <>
+          <a
+            href={downloadUrl}
+            className="bg-white sm:text-sm font-bold lg:text-2xl p-1 rounded-md"
+            download="expenses.csv"
+          >
+            Click Again to Download
+          </a>
+          <button
+            className="bg-red-600 text-white mx-2 sm:text-sm font-bold lg:text-2xl p-1 rounded-md"
+            onClick={() => {
+              SetdownloadUrl("");
+            }}
+          >
+            Cancel
+          </button>
+        </>
+      )}
+
       {props.isPremium && (
         <div className="sm:text-sm font-bold lg:text-2xl rounded-md flex justify-between m-4">
-          <CSVLink
+          {/* <CSVLink
             className="bg-white sm:text-sm font-bold lg:text-2xl p-1 rounded-md"
             data={Object.values(expence)}
             filename="data.csv"
           >
             Download Expenses
-          </CSVLink>
+          </CSVLink> */}
+
           <select
             className="bg-white sm:text-sm font-bold lg:text-2xl p-1 rounded-md"
             onChange={filterHandler}
