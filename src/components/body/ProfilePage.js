@@ -38,10 +38,10 @@ const ProfilePage = (props) => {
               )}
             </div>
             <div className="md:w-2/3  text-white">
-              <h1 className="bg-sky-600 m-2 rounded-lg font-bold lg:text-3xl p-2">
+              <h1 className="bg-blue-600 m-2 rounded-lg font-bold lg:text-3xl p-2">
                 Contact Details
               </h1>
-              <ProfileForm />
+              <ProfileForm userData={props.userData}/>
             </div>
             <div className="md:w-1/3 text-right">
               <button

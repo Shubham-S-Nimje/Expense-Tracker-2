@@ -102,7 +102,7 @@ const ExpencesForm = (props) => {
 
     const daily = new Date().getDay();
     // const weekly = new Date().getWeek();
-    const monthly = new Date().getMonth() + 1; // Adding 1 to get the correct month number
+    const monthly = new Date().getMonth() + 1;
     const yearly = new Date().getFullYear();
 
     console.log("current", daily, monthly, yearly);
@@ -170,15 +170,15 @@ const ExpencesForm = (props) => {
       );
 
       if (!response.ok) {
-        // console.log(response.statusText)
+        console.log(response);
         throw new Error(response.statusText);
       }
 
-      const data = await response.blob();
-      // console.log(data);
-      const url = URL.createObjectURL(data);
+      const data = await response.json();
+      // console.log(data.fileUrl);
+      // const url = URL.createObjectURL(data);
       // console.log(url);
-      SetdownloadUrl(url);
+      SetdownloadUrl(data.fileUrl);
     } catch (error) {
       alert(error.message);
     }
@@ -279,34 +279,6 @@ const ExpencesForm = (props) => {
         </>
       )}
 
-      {!downloadUrl && (
-        <button
-          className="bg-white sm:text-sm font-bold lg:text-2xl p-1 rounded-md"
-          onClick={downloadExpense}
-        >
-          Download Expenses
-        </button>
-      )}
-      {downloadUrl && (
-        <>
-          <a
-            href={downloadUrl}
-            className="bg-white sm:text-sm font-bold lg:text-2xl p-1 rounded-md"
-            download="expenses.csv"
-          >
-            Click Again to Download
-          </a>
-          <button
-            className="bg-red-600 text-white mx-2 sm:text-sm font-bold lg:text-2xl p-1 rounded-md"
-            onClick={() => {
-              SetdownloadUrl("");
-            }}
-          >
-            Cancel
-          </button>
-        </>
-      )}
-
       {props.isPremium && (
         <div className="sm:text-sm font-bold lg:text-2xl rounded-md flex justify-between m-4">
           {/* <CSVLink
@@ -316,6 +288,34 @@ const ExpencesForm = (props) => {
           >
             Download Expenses
           </CSVLink> */}
+
+          {!downloadUrl && (
+            <button
+              className="bg-white sm:text-sm font-bold lg:text-2xl p-1 rounded-md"
+              onClick={downloadExpense}
+            >
+              Download Expenses
+            </button>
+          )}
+          {downloadUrl && (
+            <div>
+              <a
+                href={downloadUrl}
+                className="bg-white sm:text-sm font-bold lg:text-2xl p-1 rounded-md"
+                download="expenses.csv"
+              >
+                Click Again to Download
+              </a>
+              <button
+                className="bg-red-600 text-white mx-2 sm:text-sm font-bold lg:text-2xl p-1 rounded-md"
+                onClick={() => {
+                  SetdownloadUrl("");
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          )}
 
           <select
             className="bg-white sm:text-sm font-bold lg:text-2xl p-1 rounded-md"
@@ -331,6 +331,14 @@ const ExpencesForm = (props) => {
       )}
 
       <DisplayExpenses expence={filteredexpence} />
+      <div className="text-end mx-4">
+        <button
+          className="bg-white sm:text-sm font-bold lg:text-2xl px-2 py-1 rounded-md"
+          onClick={downloadExpense}
+        >
+          Total Expenses = <span className="text-red-600">Rs. {props.userData.totalExpensemoney} /- Only</span>
+        </button>
+      </div>
     </div>
   );
 };

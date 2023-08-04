@@ -39,7 +39,7 @@ const EmailVariForm = (props) => {
       });
   };
   return (
-    <div className="bg-sky-600 rounded-lg flex flex-col lg:flex-row mx-2 items-center text-center  text-white">
+    <div className="bg-blue-600 rounded-lg flex flex-col lg:flex-row mx-2 items-center text-center  text-white">
       <div className="m-2">
         <label className="text-sm font-bold">Email :</label>
         <input

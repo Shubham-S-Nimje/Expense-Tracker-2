@@ -43,7 +43,7 @@ const LoginForm = () => {
         // console.log(data);
         data && localStorage.setItem("localId", data.user.authToken);
         // data && localStorage.setItem("email", data.user[0].email);
-        history.push("/Expense-Tracker-2/profile");
+        history.push("/Expense-Tracker-2");
         // window.location.reload();
         dispatch(authActions.login());
         console.log("User has successfully signed in");
@@ -89,7 +89,7 @@ const LoginForm = () => {
             <div>
               <button
                 type="submit"
-                className="bg-sky-600 min-w-full text-white py-2 my-2 rounded-md"
+                className="bg-blue-600 min-w-full text-white py-2 my-2 rounded-md"
               >
                 Sign in
               </button>

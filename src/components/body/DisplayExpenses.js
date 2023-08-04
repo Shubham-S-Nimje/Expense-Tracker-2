@@ -107,52 +107,61 @@ const DisplayExpenses = (props) => {
         <table className="table-fixed w-full">
           <thead className="bg-white border-black border-2 rounded-md">
             <tr className="mx-1 flex justify-between text-xs items-center text-center sm:text-sm lg:text-2xl">
-              <th>Category</th>
-              <th>Description</th>
-              <th>Money</th>
-              <th>Edit</th>
-              <th>Delete</th>
+              <th className="w-1/4">Category</th>
+              <th className="w-1/4">Description</th>
+              <th className="w-1/4">Money</th>
+              <th className="w-1/4">Edit</th>
+              <th className="w-1/4">Delete</th>
             </tr>
           </thead>
           <tbody className="table-fixed w-full justify-center text-center">
             {props.expence &&
               Object.keys(props.expence).map((data, index) => {
                 return (
-                  <tr
-                    key={index}
-                    className="flex gap-1 justify-between text-xs items-center text-center sm:text-sm lg:text-2xl"
-                  >
-                    <td>{props.expence[data].expensecategory}</td>
-                    <td>{props.expence[data].expensedescription} </td>
-                    <td>Rs. {props.expence[data].expensemoney}/- </td>
-                    <td>
-                      <button
-                        className="bg-green-600 text-white p-1 lg:p-2 my-2 rounded-md"
-                        onClick={(event) => {
-                          event.preventDefault();
-                          Seteditbutonclicked(true);
-                          editItem(
-                            props.expence[data].expensecategory,
-                            props.expence[data].expensedescription,
-                            props.expence[data].expensemoney,
-                            data
-                          );
-                        }}
-                        value={[data]}
-                      >
-                        Edit
-                      </button>
-                    </td>
-                    <td>
-                      <button
-                        className="bg-red-600 text-white rounded-md p-1 lg:p-2 my-1"
-                        value={[data]}
-                        onClick={OnDeleteHandler}
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
+                  <>
+                    <tr
+                      key={index}
+                      className="flex gap-1 justify-between text-xs items-center text-center sm:text-sm lg:text-2xl"
+                    >
+                      <td className="w-1/4">
+                        {props.expence[data].expensecategory}
+                      </td>
+                      <td className="w-1/4">
+                        {props.expence[data].expensedescription}{" "}
+                      </td>
+                      <td className="w-1/4">
+                        Rs. {props.expence[data].expensemoney}/- Only
+                      </td>
+                      <td className="w-1/4">
+                        <button
+                          className="bg-green-600 text-white p-1 lg:p-2 my-2 w-20 rounded-md"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            Seteditbutonclicked(true);
+                            editItem(
+                              props.expence[data].expensecategory,
+                              props.expence[data].expensedescription,
+                              props.expence[data].expensemoney,
+                              data
+                            );
+                          }}
+                          value={[data]}
+                        >
+                          Edit
+                        </button>
+                      </td>
+                      <td className="w-1/4">
+                        <button
+                          className="bg-red-600 text-white rounded-md p-1 lg:p-2 my-1 w-20"
+                          value={[data]}
+                          onClick={OnDeleteHandler}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                    <hr className="border-1 border-gray-600 mx-4" />
+                  </>
                 );
               })}
           </tbody>

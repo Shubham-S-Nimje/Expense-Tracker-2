@@ -45,7 +45,7 @@ const PassChangeForm = (props) => {
     }
   }
   return (
-    <form className="bg-sky-600 mx-2 rounded-lg p-2 m-2  text-white">
+    <form className="bg-blue-600 mx-2 rounded-lg p-2 m-2  text-white">
   <div className="flex flex-col md:flex-row items-center">
     <div className="m-2 p-2">
       <label className="block mb-1 font-bold">New Password :</label>

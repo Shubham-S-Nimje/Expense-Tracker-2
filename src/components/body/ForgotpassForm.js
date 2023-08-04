@@ -61,7 +61,7 @@ const ForgotpassForm = () => {
         <div>
           <button
             type="submit"
-            className="bg-sky-600 min-w-full text-white py-2 my-2 rounded-md"
+            className="bg-blue-600 min-w-full text-white py-2 my-2 rounded-md"
           >
             Submit
           </button>

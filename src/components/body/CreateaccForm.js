@@ -124,7 +124,7 @@ const CreateaccForm = () => {
         <div>
           <button
             type="submit"
-            className="bg-sky-600 text-white py-2 my-2 rounded-md min-w-full"
+            className="bg-blue-600 text-white py-2 my-2 rounded-md min-w-full"
           >
             Sign up
           </button>

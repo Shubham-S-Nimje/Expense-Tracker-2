@@ -16,6 +16,7 @@ const HomePage = () => {
   const [showProfile, SetshowProfile] = useState(false);
   const [isPremium, SetisPremium] = useState(false);
   const [Displaylb, SetDisplaylb] = useState(false);
+  const [userData, SetuserData] = useState('');
   const dispatch = useDispatch();
   const history = useHistory();
   const isDark = useSelector((state) => state.theme.isDarkmode);
@@ -149,6 +150,7 @@ const HomePage = () => {
         });
         const data = await response.json();
         // console.log(data)
+        SetuserData(data.user)
         if (data.user.ispremiumuser === true) {
           // console.log(data.user.ispremiumuser)
           SetisPremium(true);
@@ -161,6 +163,8 @@ const HomePage = () => {
       userlocalId && fetchData();
     }
   }, []);
+
+  // console.log(userData.totalExpensemoney)
 
   return (
     <Fragment>
@@ -185,7 +189,7 @@ const HomePage = () => {
             className="bg-red-600 text-white rounded-md m-2 p-2"
             onClick={LeaderboardHandler}
           >
-            Leader Board
+            {Displaylb? 'Close Leader Board':'Open Leader Board'}
           </button>
         )}
         <div className={`text-end ${isDark ? "bg-black" : ""}`}>
@@ -210,16 +214,16 @@ const HomePage = () => {
 
       {!showProfile && islogin ? (
         <div className="min-h-full">
-          <h1
+          <h3
             className={`text-xl font-bold py-2 bg-blue-600 text-white m-2 rounded-md border-2 border-white`}
           >
             Welcome to Expense Tracker!..
-          </h1>
+          </h3>
           <div className="flex justify-center text-end p-2 m-2 border-2 border-black rounded-md bg-pink-100">
             <h2>Your profile is incomplete</h2>
             <Link to="/Expense-Tracker-2/profile">
               <button
-                className="text-sky-600 mx-2 rounded-md"
+                className="text-red-600 mx-2 rounded-md font-bold"
                 onClick={OpenprofileHandler}
               >
                 Complete Now
@@ -232,14 +236,14 @@ const HomePage = () => {
             </span>
           </Link> */}
           </div>
-          <div className="bg-blue-600 rounded-md m-2 p-2 border-2 border-white">
-            <ExpencesForm isPremium={isPremium} />
-          </div>
+          {!Displaylb && <div className="bg-blue-600 rounded-md m-2 p-2 border-2 border-white">
+            <ExpencesForm isPremium={isPremium}  userData={userData} />
+          </div>}
         </div>
       ) : (
         <Body />
       )}
-      {showProfile && <ProfilePage userlocalId={userlocalId} />}
+      {showProfile && <ProfilePage/>}
       {Displaylb && <Leaderboard />}
     </Fragment>
   );
