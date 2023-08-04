@@ -5,11 +5,12 @@ import { useContext } from "react";
 import ContextData from "../store/Contextdata";
 import { CSVLink } from "react-csv";
 
-const ExpencesForm = () => {
+const ExpencesForm = (props) => {
   const { expenses, expensedata } = useContext(ContextData);
   const userlocalId = localStorage.getItem("localId");
 
   const [expence, Setexpence] = useState([]);
+  const [filteredexpence, Setfilteredexpence] = useState([]);
   const [enterexpense, setenterexpense] = useState(false);
   const [ActivePremium, SetActivePremium] = useState(false);
 
@@ -48,7 +49,7 @@ const ExpencesForm = () => {
           body: JSON.stringify(data),
           headers: {
             "Content-Type": "application/json",
-            "Authorization" : userlocalId
+            Authorization: userlocalId,
           },
         });
 
@@ -71,7 +72,7 @@ const ExpencesForm = () => {
           body: JSON.stringify({ userid: userlocalId }),
           headers: {
             "Content-Type": "application/json",
-            "Authorization" : userlocalId
+            Authorization: userlocalId,
           },
         });
 
@@ -81,6 +82,7 @@ const ExpencesForm = () => {
 
         const data = await response.json();
         Setexpence(data.expense);
+        Setfilteredexpence(data.expense);
       } catch (error) {
         alert(error.message);
       }
@@ -93,12 +95,71 @@ const ExpencesForm = () => {
     SetActivePremium(false);
   };
 
+  const filterHandler = (e) => {
+    const cuurentFilter = e.target.value;
+    // console.log(cuurentFilter);
+
+    const daily = new Date().getDay();
+    // const weekly = new Date().getWeek();
+    const monthly = new Date().getMonth() + 1; // Adding 1 to get the correct month number
+    const yearly = new Date().getFullYear();
+
+    console.log("current", daily, monthly, yearly);
+
+    if (cuurentFilter === "all") {
+      Setfilteredexpence(expence);
+      // console.log("all");
+    } else if (cuurentFilter === "daily") {
+      const dailyExpense = expence.filter((expense) => {
+        const createdAtDate = new Date(expense.createdAt);
+        return createdAtDate.getDay() === daily;
+      });
+      // console.log("daily", dailyExpense);
+      Setfilteredexpence(dailyExpense);
+    }
+    // else if (e.target.value === "weekly") {
+    //   const weeklyExpense = expence.filter((expense) => {
+    //     const createdAtDate = new Date(expense.createdAt);
+    //     const currentDate = new Date();
+    //     const firstDayOfWeek = new Date(
+    //       currentDate.setDate(currentDate.getDate() - currentDate.getDay())
+    //     );
+    //     const lastDayOfWeek = new Date(
+    //       currentDate.setDate(currentDate.getDate() - currentDate.getDay() + 6)
+    //     );
+    //     return (
+    //       createdAtDate >= firstDayOfWeek && createdAtDate <= lastDayOfWeek
+    //     );
+    //   });
+    //   console.log("weekly", weeklyExpense);
+    //   Setfilteredexpence(weeklyExpense);
+    // }
+    else if (cuurentFilter === "monthly") {
+      console.log(cuurentFilter);
+      const monthlyExpense = expence.filter((expense) => {
+        const createdAtDate = new Date(expense.createdAt);
+        return createdAtDate.getMonth() + 1 === monthly;
+      });
+      // console.log("monthly", monthlyExpense);
+      Setfilteredexpence(monthlyExpense);
+    } else if (cuurentFilter === "yearly") {
+      const yearlyExpense = expence.filter((expense) => {
+        const createdAtDate = new Date(expense.createdAt);
+        return createdAtDate.getFullYear() === yearly;
+      });
+      // console.log("yearly", yearlyExpense);
+      Setfilteredexpence(yearlyExpense);
+    } else {
+      console.log("Filter Not Found!..");
+    }
+  };
+
   // console.log(expence)
   return (
     <div>
       {!enterexpense ? (
         <button
-          className="m-4 bg-white font-bold lg:text-2xl p-2 rounded-md sm:text-sm"
+          className="min-w-full bg-white font-bold lg:text-2xl my-2 p-2 rounded-md sm:text-sm"
           onClick={Onaddexpenseclickhandler}
         >
           Add Expense
@@ -187,14 +248,29 @@ const ExpencesForm = () => {
         </>
       )}
 
-      {/* <CSVLink */}
-      {/* className="m-4 bg-white sm:text-sm font-bold lg:text-2xl p-2 rounded-md"
-    data={Object.values(expence)}
-    filename="data.csv"
-  >
-    Download Expenses */}
-      {/* </CSVLink> */}
-      <DisplayExpenses expence={expence} />
+      {props.isPremium && (
+        <div className="sm:text-sm font-bold lg:text-2xl rounded-md flex justify-between m-4">
+          <CSVLink
+            className="bg-white sm:text-sm font-bold lg:text-2xl p-1 rounded-md"
+            data={Object.values(expence)}
+            filename="data.csv"
+          >
+            Download Expenses
+          </CSVLink>
+          <select
+            className="bg-white sm:text-sm font-bold lg:text-2xl p-1 rounded-md"
+            onChange={filterHandler}
+          >
+            <option value="all">All</option>
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+            <option value="yearly">Yearly</option>
+          </select>
+        </div>
+      )}
+
+      <DisplayExpenses expence={filteredexpence} />
     </div>
   );
 };

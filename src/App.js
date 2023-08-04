@@ -26,7 +26,7 @@ function App() {
 
   return (
     <Contextprovider>
-      <div className={`App ${isDark ? 'bg-black' : ''}`}>
+      <div className={`min-h-screen App ${isDark ? 'bg-black' : ''}`}>
         <Header />
         <Router>
           <Switch>

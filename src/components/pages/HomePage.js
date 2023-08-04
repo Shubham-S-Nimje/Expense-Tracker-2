@@ -165,7 +165,7 @@ const HomePage = () => {
   return (
     <Fragment>
       <div className="justify-between flex">
-        <div className={`text-end ${isDark ? "bg-black" : ""}`}>
+        <div className={`text-center ${isDark ? "bg-black" : ""}`}>
           {islogin && !isPremium && (
             <button
               className="bg-red-600 text-white rounded-md m-2 p-2"
@@ -209,7 +209,7 @@ const HomePage = () => {
       </div>
 
       {!showProfile && islogin ? (
-        <div className="min-h-fit">
+        <div className="min-h-full">
           <h1
             className={`text-xl font-bold py-2 bg-blue-600 text-white m-2 rounded-md border-2 border-white`}
           >
@@ -233,7 +233,7 @@ const HomePage = () => {
           </Link> */}
           </div>
           <div className="bg-blue-600 rounded-md m-2 p-2 border-2 border-white">
-            <ExpencesForm />
+            <ExpencesForm isPremium={isPremium} />
           </div>
         </div>
       ) : (

@@ -16,7 +16,7 @@ const ProfilePage = (props) => {
 
   return (
     <>
-      {isAuth && (
+      {userlocalId && (
         <div className="min-h-screen py-2">
           <div className="md:flex md:justify-between text-center">
             <div className="md:w-1/3 text-right">
@@ -54,7 +54,7 @@ const ProfilePage = (props) => {
           </div>
         </div>
       )}
-      {!isAuth && <Body />}
+      {!userlocalId && <Body />}
     </>
   );
 };

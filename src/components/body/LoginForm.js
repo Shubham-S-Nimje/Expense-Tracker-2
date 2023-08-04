@@ -44,6 +44,7 @@ const LoginForm = () => {
         data && localStorage.setItem("localId", data.user.authToken);
         // data && localStorage.setItem("email", data.user[0].email);
         history.push("/Expense-Tracker-2/profile");
+        // window.location.reload();
         dispatch(authActions.login());
         console.log("User has successfully signed in");
       })
