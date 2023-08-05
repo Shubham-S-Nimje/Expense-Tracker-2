@@ -64,10 +64,10 @@ const Leaderboard = (props) => {
         <table className="table-fixed w-full">
           <thead className="bg-white border-black border-2 rounded-md">
             <tr className="mx-1 flex justify-between text-xs items-center text-center sm:text-sm lg:text-2xl">
-              <th className="w-1/12">Id:</th>
-              <th className="w-1/12">userId:</th>
-              <th className="w-1/3">Created Date</th>
-              <th className="w-1/3">Updated Date</th>
+              <th className="w-1/12">Id</th>
+              <th className="w-1/3">userId</th>
+              <th className="w-1/3">Created At</th>
+              <th className="w-1/3">Updated At</th>
               <th className="w-1/3">Download</th>
             </tr>
           </thead>
@@ -84,7 +84,7 @@ const Leaderboard = (props) => {
                       <td className="w-1/12">
                         {expenseDownloadhistory[data].id}
                       </td>
-                      <td className="w-1/12">
+                      <td className="w-1/3">
                         {expenseDownloadhistory[data].userId}
                       </td>
                       <td className="w-1/3">
@@ -100,9 +100,9 @@ const Leaderboard = (props) => {
                       <td className="w-1/3">
                         <a
                           href={expenseDownloadhistory[data].url}
-                          className="bg-blue-600 px-2 text-white rounded-md w-20"
+                          className="bg-blue-600 px-2 py-1 text-white rounded-md w-20"
                         >
-                          Delete
+                          Download
                         </a>
                       </td>
                     </tr>

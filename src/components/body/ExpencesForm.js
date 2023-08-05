@@ -333,7 +333,7 @@ const ExpencesForm = (props) => {
       <DisplayExpenses expence={filteredexpence} />
       <div className="text-end mx-4">
         <button
-          className="bg-white sm:text-sm font-bold lg:text-2xl px-2 py-1 rounded-md"
+          className="bg-white text-xs sm:text-sm font-bold lg:text-2xl px-2 py-1 rounded-md"
           onClick={downloadExpense}
         >
           Total Expenses = <span className="text-red-600">Rs. {props.userData.totalExpensemoney} /- Only</span>

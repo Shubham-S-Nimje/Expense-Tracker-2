@@ -75,19 +75,19 @@ const ProfileForm = (props) => {
             className="bg-blue-600 mx-2 rounded-lg p-2 m-2 text-white"
             onSubmit={onSubmitHandler}
           >
-            <div className="flex flex-col md:flex-row lg:w-fit">
-              <div className="flex justify-between lg:justify-start items-center flex-row md:w-1/2 mb-4 md:mb-0 md:pr-2">
-                <label className="text-sm font-bold">Full Name :</label>
+            <div className="flex flex-col lg:flex-row lg:w-fit">
+              <div className="flex justify-center lg:justify-start items-center flex-row lg:w-1/2 m-2">
+                <label className="text-sm font-bold">Full Name : </label>
                 <input
-                  className="border-2 rounded-md px-2 lg:mx-2 py-1"
+                  className="border-2 rounded-md px-2 mx-2 py-1"
                   ref={enteredfname}
                   placeholder={username}
                 />
               </div>
-              <div className="flex justify-between lg:justify-start items-center flex-row md:w-1/2 mb-4 md:mb-0 md:pl-2">
-                <label className="text-sm font-bold">Profile Photo URL :</label>
+              <div className="flex justify-center lg:justify-start items-center flex-row lg:w-1/2 m-2">
+                <label className="text-sm font-bold">Profile URL : </label>
                 <input
-                  className="border-2 rounded-md px-2 lg:mx-2 py-1"
+                  className="border-2 rounded-md px-2 mx-2 py-1"
                   ref={enteredpurl}
                   placeholder={userurl}
                 />

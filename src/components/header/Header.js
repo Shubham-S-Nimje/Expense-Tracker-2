@@ -25,7 +25,7 @@ const Header = () => {
   return (
     <div className="flex bg-blue-600 max-w-screen text-white items-center mx-auto p-4 justify-between">
       <a href="/Expense-Tracker-2" className="flex items-center">
-        <img src={logo} className="h-8 mr-3" alt="Logo" />
+        <img src={logo} className="h-8" alt="Logo" />
         <span className="text-2xl font-semibold">ExpenseTracker</span>
       </a>
       <div className="text-xl font-semibold">

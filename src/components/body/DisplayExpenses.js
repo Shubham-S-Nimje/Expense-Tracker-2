@@ -119,7 +119,7 @@ const DisplayExpenses = (props) => {
       ) : (
         <table className="table-fixed w-full">
           <thead className="bg-white border-black border-2 rounded-md">
-            <tr className="mx-1 flex justify-between text-xs items-center text-center sm:text-sm lg:text-2xl">
+            <tr className="mx-1 flex justify-between text-xs items-center text-center md:text-lg lg:text-2xl">
               <th className="w-1/4">Category</th>
               <th className="w-1/4">Description</th>
               <th className="w-1/4">Money</th>
@@ -127,7 +127,7 @@ const DisplayExpenses = (props) => {
               <th className="w-1/4">Delete</th>
             </tr>
           </thead>
-          <tbody className="table-fixed w-full justify-center text-center">
+          <tbody className="table-fixed w-full justify-center text-center text-xs">
             {currentExpensePerpage &&
               Object.keys(currentExpensePerpage).map((data, index) => {
                 if (index < paginationEnd) {
@@ -135,7 +135,7 @@ const DisplayExpenses = (props) => {
                     <>
                       <tr
                         key={index}
-                        className="flex gap-1 justify-between text-xs items-center text-center sm:text-sm lg:text-2xl"
+                        className="flex gap-1 justify-between text-xs items-center text-center md:text-lg lg:text-2xl"
                       >
                         <td className="w-1/4">
                           {currentExpensePerpage[data].expensecategory}
@@ -144,11 +144,11 @@ const DisplayExpenses = (props) => {
                           {currentExpensePerpage[data].expensedescription}{" "}
                         </td>
                         <td className="w-1/4">
-                          Rs. {currentExpensePerpage[data].expensemoney}/- Only
+                          ₹ {currentExpensePerpage[data].expensemoney}
                         </td>
                         <td className="w-1/4">
                           <button
-                            className="bg-green-600 text-white p-1 lg:p-2 my-2 w-20 rounded-md"
+                            className="bg-green-600 text-white px-2 py-1 my-2 w-fit rounded-md"
                             onClick={(event) => {
                               event.preventDefault();
                               Seteditbutonclicked(true);
@@ -166,7 +166,7 @@ const DisplayExpenses = (props) => {
                         </td>
                         <td className="w-1/4">
                           <button
-                            className="bg-red-600 text-white rounded-md p-1 lg:p-2 my-1 w-20"
+                            className="bg-red-600 text-white rounded-md px-2 py-1 my-1 w-fit"
                             value={[data]}
                             onClick={OnDeleteHandler}
                           >
@@ -182,11 +182,12 @@ const DisplayExpenses = (props) => {
           </tbody>
         </table>
       )}
-      <div className="justify-between flex mt-4 ">
-        <div>
+      <div className="justify-between md:flex mt-4 text-xs md:text-lg lg:text-2x">
+      <p className="my-2 font-bold">{`${paginationStart} - ${paginationEnd} of ${props.expence.length}`}</p>
+        <div className="my-2 ">
           <span className="font-bold">Rows per page: </span>
           <select
-            className="bg-blue-600 text-white sm:text-sm font-bold lg:text-2xl mx-1 px-2 py-1 rounded-md"
+            className="bg-blue-600 text-white font-bold mx-1 px-2 py-1 rounded-md"
             onChange={rowPerpageHandler}
           >
             <option value="5">5</option>
@@ -196,11 +197,10 @@ const DisplayExpenses = (props) => {
             <option value="100">100</option>
           </select>
         </div>
-        <p className="font-bold">{`${paginationStart} - ${paginationEnd} of ${props.expence.length}`}</p>
-        <div>
+        <div className="my-2 ">
           {currentPage > 1 && (
             <button
-              className="bg-blue-600 text-white sm:text-sm font-bold lg:text-2xl mx-1 px-2 py-1 rounded-md"
+              className="bg-blue-600 text-white font-bold mx-1 px-2 py-1 rounded-md"
               onClick={onStartclickhandler}
             >
               Start
@@ -208,7 +208,7 @@ const DisplayExpenses = (props) => {
           )}
           {currentPage > 1 && (
             <button
-              className="bg-blue-600 text-white sm:text-sm font-bold lg:text-2xl mx-1 px-2 py-1 rounded-md"
+              className="bg-blue-600 text-white font-bold mx-1 px-2 py-1 rounded-md"
               onClick={onBackclickhandler}
             >
               Back
@@ -216,7 +216,7 @@ const DisplayExpenses = (props) => {
           )}
           {paginationEnd <= props.expence.length && (
             <button
-              className="bg-blue-600 text-white sm:text-sm font-bold lg:text-2xl mx-1 px-2 py-1 rounded-md"
+              className="bg-blue-600 text-white font-bold mx-1 px-2 py-1 rounded-md"
               onClick={onNextclickhandler}
             >
               Next
@@ -224,7 +224,7 @@ const DisplayExpenses = (props) => {
           )}
           {paginationEnd <= props.expence.length && (
             <button
-              className="bg-blue-600 text-white sm:text-sm font-bold lg:text-2xl mx-1 px-2 py-1 rounded-md"
+              className="bg-blue-600 text-white font-bold mx-1 px-2 py-1 rounded-md"
               onClick={onEndclickhandler}
             >
               End

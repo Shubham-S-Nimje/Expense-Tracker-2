@@ -17,9 +17,9 @@ const ProfilePage = (props) => {
   return (
     <>
       {userlocalId && (
-        <div className="min-h-screen py-2">
-          <div className="md:flex md:justify-between text-center">
-            <div className="md:w-1/3 text-right">
+        <div className="min-h-screen py-2  text-xs sm:text-lg lg:text-2xl">
+          <div className="lg:flex md:justify-between text-center min-w-min">
+            <div className="lg:w-1/3 text-right">
               {userimage && (
                 <div className="flex justify-center items-center m-4">
                   <img
@@ -37,13 +37,13 @@ const ProfilePage = (props) => {
                 </div>
               )}
             </div>
-            <div className="md:w-2/3  text-white">
+            <div className="lg:w-2/3  text-white">
               <h1 className="bg-blue-600 m-2 rounded-lg font-bold lg:text-3xl p-2">
                 Contact Details
               </h1>
               <ProfileForm userData={props.userData}/>
             </div>
-            <div className="md:w-1/3 text-right">
+            <div className="lg:w-1/3 text-right">
               <button
                 onClick={oncancelhandler}
                 className="bg-red-600 p-1 lg:p-2 m-2 rounded-md text-white"
