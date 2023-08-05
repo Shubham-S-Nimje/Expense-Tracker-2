@@ -9,21 +9,41 @@ const DisplayExpenses = (props) => {
   const [editeddesc, Setediteddesc] = useState();
   const [editedcat, Seteditedcat] = useState();
   const [editedid, Seteditedid] = useState();
-  const oldexpenses = props.expence;
-  const [updatedexpence, Setupdatedexpence] = useState([]);
-
+  const [currentPage, SetcurrentPage] = useState(1);
+  const [lastPage, SetlastPage] = useState();
   const [editbutonclicked, Seteditbutonclicked] = useState(false);
 
-  // const [expence, Setexpence] = useState([])
+  const expensePerpage = 5;
+  const paginationEnd = currentPage * expensePerpage;
+  const paginationStart = paginationEnd - expensePerpage;
 
-  // const data = props.expenseitems
-  // console.log(defaultValue)
+  const currentExpensePerpage = props.expence.slice(
+    paginationStart,
+    paginationEnd
+  );
+
+  const onStartclickhandler = () => {
+    SetcurrentPage(1);
+  };
+
+  const onBackclickhandler = () => {
+    SetcurrentPage(currentPage - 1);
+  };
+
+  const onNextclickhandler = () => {
+    SetcurrentPage(currentPage + 1);
+  };
+
+  const onEndclickhandler = () => {
+    SetlastPage((props.expence.length + expensePerpage - 1) / expensePerpage);
+    SetcurrentPage(lastPage);
+  };
 
   const OnDeleteHandler = async (event) => {
     const expenseid = await event.target.value;
     // console.log(updatedexpence[event.target.value].userid);
 
-    const expenseuserid = updatedexpence[expenseid].id;
+    const expenseuserid = props.expence[expenseid].id;
     // console.log(expenseuserid);
     fetch(`http://localhost:4000/delete-expences/${expenseuserid}`, {
       method: "DELETE",
@@ -61,26 +81,7 @@ const DisplayExpenses = (props) => {
     Seteditbutonclicked(false);
   };
 
-  useEffect(() => {
-    oldexpenses && Setupdatedexpence(oldexpenses);
-  }, [editItem, OnDeleteHandler]);
-
-  // console.log(oldexpenses,updatedexpence)
-  // useEffect(()=>{
-  //     async function fetchData() {
-  //     try{
-  //         const response = await fetch(`https://expense-tracker-f48d6-default-rtdb.firebaseio.com/users/${userlocalId}/expences.json`)
-  //         const data = await response.json();
-  //         console.log(data)
-  //         Setexpence(data)
-  //             }
-  //             catch{
-  //                 alert('error')
-  //             }
-  // }
-  // fetchData();
-  // },[OnDeleteHandler])
-  // console.log(updatedexpence);
+  // console.log(currentPage);
 
   return (
     <div className="bg-blue-100 m-4 rounded-md p-4">
@@ -115,58 +116,94 @@ const DisplayExpenses = (props) => {
             </tr>
           </thead>
           <tbody className="table-fixed w-full justify-center text-center">
-            {props.expence &&
-              Object.keys(props.expence).map((data, index) => {
-                return (
-                  <>
-                    <tr
-                      key={index}
-                      className="flex gap-1 justify-between text-xs items-center text-center sm:text-sm lg:text-2xl"
-                    >
-                      <td className="w-1/4">
-                        {props.expence[data].expensecategory}
-                      </td>
-                      <td className="w-1/4">
-                        {props.expence[data].expensedescription}{" "}
-                      </td>
-                      <td className="w-1/4">
-                        Rs. {props.expence[data].expensemoney}/- Only
-                      </td>
-                      <td className="w-1/4">
-                        <button
-                          className="bg-green-600 text-white p-1 lg:p-2 my-2 w-20 rounded-md"
-                          onClick={(event) => {
-                            event.preventDefault();
-                            Seteditbutonclicked(true);
-                            editItem(
-                              props.expence[data].expensecategory,
-                              props.expence[data].expensedescription,
-                              props.expence[data].expensemoney,
-                              data
-                            );
-                          }}
-                          value={[data]}
-                        >
-                          Edit
-                        </button>
-                      </td>
-                      <td className="w-1/4">
-                        <button
-                          className="bg-red-600 text-white rounded-md p-1 lg:p-2 my-1 w-20"
-                          value={[data]}
-                          onClick={OnDeleteHandler}
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                    <hr className="border-1 border-gray-600 mx-4" />
-                  </>
-                );
+            {currentExpensePerpage &&
+              Object.keys(currentExpensePerpage).map((data, index) => {
+                if (index < paginationEnd) {
+                  return (
+                    <>
+                      <tr
+                        key={index}
+                        className="flex gap-1 justify-between text-xs items-center text-center sm:text-sm lg:text-2xl"
+                      >
+                        <td className="w-1/4">
+                          {currentExpensePerpage[data].expensecategory}
+                        </td>
+                        <td className="w-1/4">
+                          {currentExpensePerpage[data].expensedescription}{" "}
+                        </td>
+                        <td className="w-1/4">
+                          Rs. {currentExpensePerpage[data].expensemoney}/- Only
+                        </td>
+                        <td className="w-1/4">
+                          <button
+                            className="bg-green-600 text-white p-1 lg:p-2 my-2 w-20 rounded-md"
+                            onClick={(event) => {
+                              event.preventDefault();
+                              Seteditbutonclicked(true);
+                              editItem(
+                                currentExpensePerpage[data].expensecategory,
+                                currentExpensePerpage[data].expensedescription,
+                                currentExpensePerpage[data].expensemoney,
+                                data
+                              );
+                            }}
+                            value={[data]}
+                          >
+                            Edit
+                          </button>
+                        </td>
+                        <td className="w-1/4">
+                          <button
+                            className="bg-red-600 text-white rounded-md p-1 lg:p-2 my-1 w-20"
+                            value={[data]}
+                            onClick={OnDeleteHandler}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                      <hr className="border-1 border-gray-600 mx-4" />
+                    </>
+                  );
+                }
               })}
           </tbody>
         </table>
       )}
+      <div className="justify-center flex mt-4">
+        {currentPage > 1 && (
+          <button
+            className="bg-blue-600 text-white sm:text-sm font-bold lg:text-2xl mx-1 px-2 py-1 rounded-md"
+            onClick={onStartclickhandler}
+          >
+            Start
+          </button>
+        )}
+        {currentPage > 1 && (
+          <button
+            className="bg-blue-600 text-white sm:text-sm font-bold lg:text-2xl mx-1 px-2 py-1 rounded-md"
+            onClick={onBackclickhandler}
+          >
+            Back
+          </button>
+        )}
+        {currentPage != lastPage && (
+          <button
+            className="bg-blue-600 text-white sm:text-sm font-bold lg:text-2xl mx-1 px-2 py-1 rounded-md"
+            onClick={onNextclickhandler}
+          >
+            Next
+          </button>
+        )}
+        {currentPage != lastPage && (
+          <button
+            className="bg-blue-600 text-white sm:text-sm font-bold lg:text-2xl mx-1 px-2 py-1 rounded-md"
+            onClick={onEndclickhandler}
+          >
+            End
+          </button>
+        )}
+      </div>
     </div>
   );
 };
