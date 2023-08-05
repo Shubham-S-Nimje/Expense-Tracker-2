@@ -39,8 +39,8 @@ const DisplayExpenses = (props) => {
   };
 
   const onEndclickhandler = () => {
-    if (paginationEnd < props.expence.length) {
-      SetlastPage((props.expence.length + expensePerpage - 1) / expensePerpage);
+    const lastPage = Math.ceil(props.expence.length / expensePerpage);
+    if (currentPage < lastPage) {
       SetcurrentPage(lastPage);
     }
   };
