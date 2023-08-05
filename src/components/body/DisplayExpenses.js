@@ -9,11 +9,11 @@ const DisplayExpenses = (props) => {
   const [editeddesc, Setediteddesc] = useState();
   const [editedcat, Seteditedcat] = useState();
   const [editedid, Seteditedid] = useState();
+  const [editbutonclicked, Seteditbutonclicked] = useState(false);
   const [currentPage, SetcurrentPage] = useState(1);
   const [lastPage, SetlastPage] = useState();
-  const [editbutonclicked, Seteditbutonclicked] = useState(false);
+  const [expensePerpage, SetexpensePerpage] = useState(5);
 
-  const expensePerpage = 5;
   const paginationEnd = currentPage * expensePerpage;
   const paginationStart = paginationEnd - expensePerpage;
 
@@ -31,12 +31,24 @@ const DisplayExpenses = (props) => {
   };
 
   const onNextclickhandler = () => {
-    SetcurrentPage(currentPage + 1);
+    {
+      paginationEnd < props.expence.length
+        ? SetcurrentPage(currentPage + 1)
+        : SetcurrentPage(currentPage);
+    }
   };
 
   const onEndclickhandler = () => {
-    SetlastPage((props.expence.length + expensePerpage - 1) / expensePerpage);
-    SetcurrentPage(lastPage);
+    if (paginationEnd < props.expence.length) {
+      SetlastPage((props.expence.length + expensePerpage - 1) / expensePerpage);
+      SetcurrentPage(lastPage);
+    }
+  };
+
+  const rowPerpageHandler = (e) => {
+    // console.log(e.target.value)
+    SetcurrentPage(1);
+    SetexpensePerpage(e.target.value);
   };
 
   const OnDeleteHandler = async (event) => {
@@ -170,39 +182,55 @@ const DisplayExpenses = (props) => {
           </tbody>
         </table>
       )}
-      <div className="justify-center flex mt-4">
-        {currentPage > 1 && (
-          <button
+      <div className="justify-between flex mt-4 ">
+        <div>
+          <span className="font-bold">Rows per page: </span>
+          <select
             className="bg-blue-600 text-white sm:text-sm font-bold lg:text-2xl mx-1 px-2 py-1 rounded-md"
-            onClick={onStartclickhandler}
+            onChange={rowPerpageHandler}
           >
-            Start
-          </button>
-        )}
-        {currentPage > 1 && (
-          <button
-            className="bg-blue-600 text-white sm:text-sm font-bold lg:text-2xl mx-1 px-2 py-1 rounded-md"
-            onClick={onBackclickhandler}
-          >
-            Back
-          </button>
-        )}
-        {currentPage != lastPage && (
-          <button
-            className="bg-blue-600 text-white sm:text-sm font-bold lg:text-2xl mx-1 px-2 py-1 rounded-md"
-            onClick={onNextclickhandler}
-          >
-            Next
-          </button>
-        )}
-        {currentPage != lastPage && (
-          <button
-            className="bg-blue-600 text-white sm:text-sm font-bold lg:text-2xl mx-1 px-2 py-1 rounded-md"
-            onClick={onEndclickhandler}
-          >
-            End
-          </button>
-        )}
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+        <p className="font-bold">{`${paginationStart} - ${paginationEnd} of ${props.expence.length}`}</p>
+        <div>
+          {currentPage > 1 && (
+            <button
+              className="bg-blue-600 text-white sm:text-sm font-bold lg:text-2xl mx-1 px-2 py-1 rounded-md"
+              onClick={onStartclickhandler}
+            >
+              Start
+            </button>
+          )}
+          {currentPage > 1 && (
+            <button
+              className="bg-blue-600 text-white sm:text-sm font-bold lg:text-2xl mx-1 px-2 py-1 rounded-md"
+              onClick={onBackclickhandler}
+            >
+              Back
+            </button>
+          )}
+          {paginationEnd <= props.expence.length && (
+            <button
+              className="bg-blue-600 text-white sm:text-sm font-bold lg:text-2xl mx-1 px-2 py-1 rounded-md"
+              onClick={onNextclickhandler}
+            >
+              Next
+            </button>
+          )}
+          {paginationEnd <= props.expence.length && (
+            <button
+              className="bg-blue-600 text-white sm:text-sm font-bold lg:text-2xl mx-1 px-2 py-1 rounded-md"
+              onClick={onEndclickhandler}
+            >
+              End
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
