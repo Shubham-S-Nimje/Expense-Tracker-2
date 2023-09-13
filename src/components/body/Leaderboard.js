@@ -13,7 +13,7 @@ const Leaderboard = (props) => {
     async function fetchData() {
       try {
         const response = await fetch(
-          `http://localhost:4000/fetch-totalexpencesbyuser`,
+          `http://localhost:4000/expense/fetch-totalexpensesbyuser`,
           {
             method: "POST",
             headers: {
@@ -32,7 +32,7 @@ const Leaderboard = (props) => {
 
       try {
         const response = await fetch(
-          `http://localhost:4000/fetch-downloadedexpensedata`,
+          `http://localhost:4000/expense/fetch-downloadedexpensesdata`,
           {
             method: "POST",
             headers: {
@@ -121,7 +121,7 @@ const Leaderboard = (props) => {
         <table className="table-fixed w-full">
           <thead className="bg-white border-black border-2 rounded-md">
             <tr className="mx-1 flex justify-between text-xs items-center text-center sm:text-sm lg:text-2xl">
-              <th className="w-1/3">Id:</th>
+              <th className="w-1/3">Premium user</th>
               <th className="w-1/3">Username</th>
               <th className="w-1/3">Total Expenses</th>
             </tr>
@@ -136,10 +136,13 @@ const Leaderboard = (props) => {
                       key={index}
                       className="flex gap-1 justify-between text-xs items-center text-center sm:text-lg lg:text-2xl"
                     >
-                      <td className="w-1/3">{expenseData[data].userId}</td>
+                      <td className="w-1/3">{index + 1}</td>
                       <td className="w-1/3">{expenseData[data].username} </td>
                       <td className="w-1/3">
-                        Rs. {expenseData[data].totalExpensemoney}/-{" "}
+                        ₹{" "}
+                        {parseFloat(
+                          expenseData[data].totalExpensemoney
+                        ).toFixed(2)}
                       </td>
                     </tr>
                     <hr className="border-1 border-gray-600 mx-4" />

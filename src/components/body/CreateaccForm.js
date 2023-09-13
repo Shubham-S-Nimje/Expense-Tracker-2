@@ -23,7 +23,7 @@ const CreateaccForm = () => {
     };
 
     if (enteredpass.current.value === enteredconfirmpass.current.value) {
-      const url = "http://localhost:4000/add-user";
+      const url = "http://localhost:4000/auth/add-user";
 
       fetch(url, {
         method: "POST",

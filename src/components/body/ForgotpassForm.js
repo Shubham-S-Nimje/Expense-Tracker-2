@@ -10,7 +10,7 @@ const ForgotpassForm = () => {
   const ForgotPassHandler = (event) => {
     event.preventDefault();
 
-    fetch("http://localhost:4000/forgotpassword", {
+    fetch("http://localhost:4000/auth/forgotpassword", {
       method: "POST",
       body: JSON.stringify({
         // requestType: "PASSWORD_RESET",

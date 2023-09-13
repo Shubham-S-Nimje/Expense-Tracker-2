@@ -4,16 +4,27 @@ import { useRef } from "react";
 import { useContext } from "react";
 import ContextData from "../store/Contextdata";
 import { CSVLink } from "react-csv";
+import { Fragment } from "react";
 
 const ExpencesForm = (props) => {
   const { expenses, expensedata } = useContext(ContextData);
+
   const userlocalId = localStorage.getItem("localId");
 
   const [expence, Setexpence] = useState([]);
-  const [filteredexpence, Setfilteredexpence] = useState([]);
+  // console.log(totalExpensemoney);
+
+  const [filteredexpence, Setfilteredexpence] = useState(expence);
+
   const [downloadUrl, SetdownloadUrl] = useState("");
   const [enterexpense, setenterexpense] = useState(false);
-  const [ActivePremium, SetActivePremium] = useState(false);
+  const enteredmoney = useRef();
+  const entereddesc = useRef();
+  const enteredcategory = useRef();
+
+  useEffect(() => {
+    Setfilteredexpence(expence);
+  }, [expence]);
 
   const Onaddexpenseclickhandler = () => {
     setenterexpense(true);
@@ -22,10 +33,6 @@ const ExpencesForm = (props) => {
     setenterexpense(false);
   };
 
-  const enteredmoney = useRef();
-  const entereddesc = useRef();
-  const enteredcategory = useRef();
-
   const SubmitExpenses = async (event) => {
     event.preventDefault();
 
@@ -33,67 +40,80 @@ const ExpencesForm = (props) => {
     const expensedescription = entereddesc.current.value;
     const expensecategory = enteredcategory.current.value;
 
-    if (expensemoney >= 10000) {
-      alert("Activate Premium Button");
-      SetActivePremium(true);
-    } else {
-      try {
-        const data = {
-          expensemoney: expensemoney,
-          expensedescription: expensedescription,
-          expensecategory: expensecategory,
-          returnSecureToken: true,
-        };
+    try {
+      const data = {
+        expensemoney: expensemoney,
+        expensedescription: expensedescription,
+        expensecategory: expensecategory,
+        returnSecureToken: true,
+      };
 
-        const response = await fetch(`http://localhost:4000/add-expences`, {
+      const response = await fetch(
+        `http://localhost:4000/expense/add-expense`,
+        {
           method: "POST",
           body: JSON.stringify(data),
           headers: {
             "Content-Type": "application/json",
             Authorization: userlocalId,
           },
-        });
-
-        if (!response.ok) {
-          throw new Error("Unable to add expense");
         }
+      );
+
+      if (!response.ok) {
+        throw new Error("Unable to add expense");
+      } else {
+        const responseData = await response.json();
+        const newExpense = responseData.data;
+        props.SettotalExpensemoney(
+          responseData.totalExpensemoney.totalExpensemoney
+        );
+        // props.userData = responseData.totalExpensemoney.totalExpensemoney
+        // const newExpense = { data };
+
+        Setexpence([...expence, newExpense]);
+
+        // console.log(expence);
 
         console.log("Expense added successfully");
         setenterexpense(false);
-      } catch (error) {
-        alert(error.message);
       }
+    } catch (error) {
+      alert(error.message);
     }
   };
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`http://localhost:4000/fetch-expences`, {
-          method: "POST",
-          body: JSON.stringify({ userid: userlocalId }),
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: userlocalId,
-          },
-        });
 
-        if (!response.ok) {
-          throw new Error("Error fetching expenses");
+  const handleExpenseDelete = (deletedExpenseid) => {
+    // console.log(deletedExpenseid);
+    const expenseuserid = deletedExpenseid;
+    fetch(`http://localhost:4000/expense/delete-expense/${expenseuserid}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: userlocalId,
+      },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return res.json().then((data) => {
+            let errorMessage = "Unable to delete expense";
+            throw new Error(errorMessage);
+          });
         }
-
-        const data = await response.json();
-        Setexpence(data.expense);
-        Setfilteredexpence(data.expense);
-      } catch (error) {
-        alert(error.message);
-      }
-    };
-
-    fetchData();
-  }, [userlocalId]);
-
-  const ActivePremiumCancelhandler = () => {
-    SetActivePremium(false);
+      })
+      .then((data) => {
+        console.log(data.message);
+        const updatedExpences = expence.filter(
+          (expense) => expense._id !== expenseuserid
+        );
+        Setexpence(updatedExpences);
+        props.SettotalExpensemoney(data.totalExpensemoney);
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
   };
 
   const filterHandler = (e) => {
@@ -158,7 +178,7 @@ const ExpencesForm = (props) => {
   const downloadExpense = async () => {
     try {
       const response = await fetch(
-        `http://localhost:4000/user/download-expenses`,
+        `http://localhost:4000/expense/download-expenses`,
         {
           method: "POST",
           body: JSON.stringify({ userid: userlocalId }),
@@ -185,6 +205,34 @@ const ExpencesForm = (props) => {
     // console.log('download clicked')
   };
 
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch(
+          `http://localhost:4000/expense/fetch-expenses`,
+          {
+            method: "POST",
+            body: JSON.stringify({ userid: userlocalId }),
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: userlocalId,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Error fetching expenses");
+        }
+        const data = await response.json();
+        Setexpence(data.expense);
+        // Setfilteredexpence(data.expense);
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+    fetchData();
+  }, []);
+
   // console.log(expence)
   return (
     <div>
@@ -196,87 +244,69 @@ const ExpencesForm = (props) => {
           Add Expense
         </button>
       ) : (
-        <>
-          {!ActivePremium ? (
-            <form
-              onSubmit={SubmitExpenses}
-              className="border-2 m-4 p-8 bg-blue-100 rounded-md"
-            >
-              <div className="flex justify-between p-4 rounded-md bg-blue-600">
-                <h2 className="text-sm items-center text-center sm:text-sm lg:text-3xl text-white align-middle font-bold">
-                  Enter Expense Details:
-                </h2>
-                <button
-                  className="text-sm items-center text-center sm:text-sm lg:text-3xl bg-red-600 text-white p-1 lg:p-2 rounded-md"
-                  onClick={Oncloseexpenseclickhandler}
-                >
-                  Close
-                </button>
-              </div>
-              <div className="justify-start text-left mt-2">
-                <div>
-                  <label className="font-bold lg:text-3xl">Money spent:</label>
-                  <input
-                    type="number"
-                    required
-                    className="w-full rounded-md border-2 p-2 my-2"
-                    placeholder="Enter amount Ex.99"
-                    ref={enteredmoney}
-                  />
-                </div>
-                <div>
-                  <label className="font-bold lg:text-3xl">Description:</label>
-                  <textarea
-                    type="text"
-                    required
-                    className="w-full rounded-md border-2 p-2 my-2"
-                    placeholder="Enter description"
-                    ref={entereddesc}
-                  />
-                </div>
-                <div>
-                  <label className="font-bold lg:text-3xl">
-                    Select category:
-                  </label>
-                  <select
-                    required
-                    className="w-full rounded-md border-2 p-2 my-2"
-                    ref={enteredcategory}
-                  >
-                    <option value="Rent">Rent</option>
-                    <option value="Food">Food</option>
-                    <option value="Bill">Bill</option>
-                    <option value="Emi">Emi</option>
-                  </select>
-                </div>
-                <div>
-                  <button
-                    className="bg-blue-600 text-white p-2 m-2 rounded-md"
-                    type="submit"
-                  >
-                    Submit
-                  </button>
-                </div>
-              </div>
-            </form>
-          ) : (
-            <div>
+        <Fragment>
+          <form
+            onSubmit={SubmitExpenses}
+            className="border-2 m-4 p-8 bg-blue-100 rounded-md"
+          >
+            <div className="flex justify-between p-4 rounded-md bg-blue-600">
+              <h2 className="text-sm items-center text-center sm:text-sm lg:text-3xl text-white align-middle font-bold">
+                Enter Expense Details:
+              </h2>
               <button
-                className="bg-green-600 text-white p-2 m-2 rounded-md"
-                type="submit"
+                className="text-sm items-center text-center sm:text-sm lg:text-3xl bg-red-600 text-white p-1 lg:p-2 rounded-md"
+                onClick={Oncloseexpenseclickhandler}
               >
-                Activate Premium
-              </button>
-              <button
-                className="bg-red-600 text-white p-2 m-2 rounded-md"
-                type="submit"
-                onClick={ActivePremiumCancelhandler}
-              >
-                Cancel
+                Close
               </button>
             </div>
-          )}
-        </>
+            <div className="justify-start text-left mt-2">
+              <div>
+                <label className="font-bold lg:text-3xl">Money spent:</label>
+                <input
+                  type="number"
+                  required
+                  className="w-full rounded-md border-2 p-2 my-2"
+                  placeholder="Enter amount Ex.99"
+                  ref={enteredmoney}
+                />
+              </div>
+              <div>
+                <label className="font-bold lg:text-3xl">Description:</label>
+                <textarea
+                  type="text"
+                  required
+                  className="w-full rounded-md border-2 p-2 my-2"
+                  placeholder="Enter description"
+                  ref={entereddesc}
+                />
+              </div>
+              <div>
+                <label className="font-bold lg:text-3xl">
+                  Select category:
+                </label>
+                <select
+                  required
+                  className="w-full rounded-md border-2 p-2 my-2"
+                  ref={enteredcategory}
+                >
+                  <option value="Rent">Rent</option>
+                  <option value="Food">Food</option>
+                  <option value="Bill">Bill</option>
+                  <option value="Emi">Emi</option>
+                </select>
+              </div>
+              <div className="justify-center text-center">
+                <button
+                  className="bg-blue-600 text-white p-2 m-2 rounded-md"
+                  type="submit"
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
+          </form>
+        </Fragment>
       )}
 
       {props.isPremium && (
@@ -330,13 +360,21 @@ const ExpencesForm = (props) => {
         </div>
       )}
 
-      <DisplayExpenses expence={filteredexpence} />
+      <DisplayExpenses
+        expence={filteredexpence}
+        onExpenseDelete={handleExpenseDelete}
+      />
       <div className="text-end mx-4">
         <button
           className="bg-white text-xs sm:text-sm font-bold lg:text-2xl px-2 py-1 rounded-md"
           onClick={downloadExpense}
         >
-          Total Expenses = <span className="text-red-600">Rs. {props.userData.totalExpensemoney} /- Only</span>
+          Total Expenses ={" "}
+          {props.userData && (
+            <span className="text-red-600">
+              ₹ {parseFloat(props.totalExpensemoney).toFixed(2)}
+            </span>
+          )}
         </button>
       </div>
     </div>

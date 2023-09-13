@@ -12,11 +12,12 @@ import Leaderboard from "../body/Leaderboard";
 
 const HomePage = () => {
   const userlocalId = localStorage.getItem("localId");
+  const [totalExpensemoney, SettotalExpensemoney] = useState(0);
   const [islogin, Setislogin] = useState(false);
   const [showProfile, SetshowProfile] = useState(false);
   const [isPremium, SetisPremium] = useState(false);
   const [Displaylb, SetDisplaylb] = useState(false);
-  const [userData, SetuserData] = useState('');
+  const [userData, SetuserData] = useState("");
   const dispatch = useDispatch();
   const history = useHistory();
   const isDark = useSelector((state) => state.theme.isDarkmode);
@@ -71,7 +72,7 @@ const HomePage = () => {
 
     try {
       const result = await axios.post(
-        "http://localhost:4000/activate-premium",
+        "http://localhost:4000/payment/activate-premium",
         {},
         {
           headers: {
@@ -107,7 +108,7 @@ const HomePage = () => {
           };
 
           const result = await axios.post(
-            "http://localhost:4000/payment-success",
+            "http://localhost:4000/payment/payment-success",
             data,
             {
               headers: {
@@ -141,7 +142,7 @@ const HomePage = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(`http://localhost:4000/fetch-user`, {
+        const response = await fetch(`http://localhost:4000/auth/fetch-user`, {
           method: "POST",
           headers: {
             "Content-type": "application/json",
@@ -150,7 +151,8 @@ const HomePage = () => {
         });
         const data = await response.json();
         // console.log(data)
-        SetuserData(data.user)
+        SettotalExpensemoney(data.user.totalExpensemoney);
+        SetuserData(data.user);
         if (data.user.ispremiumuser === true) {
           // console.log(data.user.ispremiumuser)
           SetisPremium(true);
@@ -159,10 +161,8 @@ const HomePage = () => {
         alert("error");
       }
     }
-    {
-      userlocalId && fetchData();
-    }
-  }, []);
+    fetchData();
+  }, [userlocalId]);
 
   // console.log(userData.totalExpensemoney)
 
@@ -189,7 +189,7 @@ const HomePage = () => {
             className="bg-red-600 text-white rounded-md m-2 p-2"
             onClick={LeaderboardHandler}
           >
-            {Displaylb? 'Close Leader Board':'Open Leader Board'}
+            {Displaylb ? "Close Leader Board" : "Open Leader Board"}
           </button>
         )}
         <div className={`text-end ${isDark ? "bg-black" : ""}`}>
@@ -236,14 +236,21 @@ const HomePage = () => {
             </span>
           </Link> */}
           </div>
-          {!Displaylb && <div className="bg-blue-600 rounded-md m-2 p-2 border-2 border-white">
-            <ExpencesForm isPremium={isPremium}  userData={userData} />
-          </div>}
+          {!Displaylb && (
+            <div className="bg-blue-600 rounded-md m-2 p-2 border-2 border-white">
+              <ExpencesForm
+                isPremium={isPremium}
+                userData={userData}
+                totalExpensemoney={totalExpensemoney}
+                SettotalExpensemoney={SettotalExpensemoney}
+              />
+            </div>
+          )}
         </div>
       ) : (
         <Body />
       )}
-      {showProfile && <ProfilePage/>}
+      {showProfile && <ProfilePage />}
       {Displaylb && <Leaderboard />}
     </Fragment>
   );

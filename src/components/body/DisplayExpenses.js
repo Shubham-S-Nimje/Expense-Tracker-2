@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useCallback } from "react";
 import EditExpenseForm from "./EditExpenseForm";
 import { useState } from "react";
+import { Fragment } from "react";
 
 const DisplayExpenses = (props) => {
   const userlocalId = localStorage.getItem("localId");
@@ -53,33 +54,12 @@ const DisplayExpenses = (props) => {
 
   const OnDeleteHandler = async (event) => {
     const expenseid = await event.target.value;
-    // console.log(updatedexpence[event.target.value].userid);
+    // console.log(props.expence,expenseid);
 
-    const expenseuserid = props.expence[expenseid].id;
+    const expenseuserid = props.expence[expenseid]._id;
     // console.log(expenseuserid);
-    fetch(`http://localhost:4000/delete-expences/${expenseuserid}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: userlocalId,
-      },
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        } else {
-          return res.json().then((data) => {
-            let errorMessage = "Unable to delete expense";
-            throw new Error(errorMessage);
-          });
-        }
-      })
-      .then((data) => {
-        console.log("Expense deleted successfully");
-      })
-      .catch((err) => {
-        alert(err.message);
-      });
+    props.onExpenseDelete(expenseuserid)
+
   };
 
   const editItem = (d1, d2, d3, id) => {
@@ -132,9 +112,8 @@ const DisplayExpenses = (props) => {
               Object.keys(currentExpensePerpage).map((data, index) => {
                 if (index < paginationEnd) {
                   return (
-                    <>
+                    <Fragment key={index}>
                       <tr
-                        key={index}
                         className="flex gap-1 justify-between text-xs items-center text-center md:text-lg lg:text-2xl"
                       >
                         <td className="w-1/4">
@@ -144,7 +123,10 @@ const DisplayExpenses = (props) => {
                           {currentExpensePerpage[data].expensedescription}{" "}
                         </td>
                         <td className="w-1/4">
-                          ₹ {currentExpensePerpage[data].expensemoney}
+                          ₹{" "}
+                          {parseFloat(
+                            currentExpensePerpage[data].expensemoney
+                          ).toFixed(2)}
                         </td>
                         <td className="w-1/4">
                           <button
@@ -175,7 +157,7 @@ const DisplayExpenses = (props) => {
                         </td>
                       </tr>
                       <hr className="border-1 border-gray-600 mx-4" />
-                    </>
+                    </Fragment>
                   );
                 }
               })}
@@ -183,7 +165,7 @@ const DisplayExpenses = (props) => {
         </table>
       )}
       <div className="justify-between md:flex mt-4 text-xs md:text-lg lg:text-2x">
-      <p className="my-2 font-bold">{`${paginationStart} - ${paginationEnd} of ${props.expence.length}`}</p>
+        <p className="my-2 font-bold">{`${paginationStart} - ${paginationEnd} of ${props.expence.length}`}</p>
         <div className="my-2 ">
           <span className="font-bold">Rows per page: </span>
           <select

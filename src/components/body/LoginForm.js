@@ -16,7 +16,7 @@ const LoginForm = () => {
     // console.log(enteredemail.current.value);
     // console.log(enteredpass.current.value);
 
-    const url = "http://localhost:4000/login-user";
+    const url = "http://localhost:4000/auth/login-user";
     fetch(url, {
       method: "POST",
       body: JSON.stringify({
